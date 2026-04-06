@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandro do Corte | Barbearia Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Botão WhatsApp Flutuante -->
+    <a href="https://wa.me/5527996313345" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">SANDRO<span>DOCORTE</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#galeria">Estilos</a></li>
+                <li><a href="#agendar" class="btn-agendar-nav">AGENDAR</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <span class="urgency-tag"><i class="fas fa-fire"></i> Horários limitados para hoje!</span>
+            <h1>TRANSFORME SEU VISUAL, <br><span>ELEVE SUA MORAL.</span></h1>
+            <p>O melhor corte da região com atendimento exclusivo e ambiente moderno.</p>
+            <div class="hero-btns">
+                <a href="#agendar" class="btn-primary">AGENDAR AGORA</a>
+                <a href="#sobre" class="btn-secondary">SAIBA MAIS</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits">
+        <div class="container grid-3">
+            <div class="benefit-card">
+                <i class="fas fa-cut"></i>
+                <h3>Mestres Barbeiros</h3>
+                <p>Técnicas modernas e acabamento impecável.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Agilidade</h3>
+                <p>Sem filas. Agendou, chegou, cortou.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-couch"></i>
+                <h3>Conforto</h3>
+                <p>Ambiente climatizado e café de cortesia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="about">
+        <div class="container grid-2">
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80" alt="Barbearia">
+            </div>
+            <div class="about-text">
+                <h2>Sobre a <span>Barbearia</span></h2>
+                <p>A Sandro do Corte não é apenas um lugar para cortar o cabelo. É um espaço dedicado ao homem moderno que valoriza seu tempo e sua imagem. Localizada no coração da cidade, nossa missão é proporcionar uma experiência de cuidado e relaxamento única.</p>
+                <div class="stats">
+                    <div><strong>+1000</strong><p>Clientes Satisfeitos</p></div>
+                    <div><strong>10</strong><p>Anos de Experiência</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria -->
+    <section id="galeria" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Galeria de <span>Estilos</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=400&q=80" alt="Corte 1"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1599351473299-282096f97002?auto=format&fit=crop&w=400&q=80" alt="Corte 2"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?auto=format&fit=crop&w=400&q=80" alt="Corte 3"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=400&q=80" alt="Corte 4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agendamento -->
+    <section id="agendar" class="booking">
+        <div class="container">
+            <div class="booking-wrapper">
+                <div class="booking-info">
+                    <h2>Reserve seu <span>Horário</span></h2>
+                    <p>Escolha a data e o horário. Nós cuidamos do resto.</p>
+                    <div class="contact-details">
+                        <p><i class="fas fa-phone"></i> (27) 99631-3345</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Rua Principal, 123 - Centro</p>
+                    </div>
+                </div>
+                <form id="form-agendamento" class="booking-form">
+                    <input type="text" id="nome" placeholder="Seu Nome Completo" required>
+                    <input type="tel" id="telefone" placeholder="Seu Telefone (WhatsApp)" required>
+                    <div class="form-row">
+                        <input type="date" id="data" required>
+                        <select id="horario" required>
+                            <option value="">Selecione o Horário</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">CONFIRMAR AGENDAMENTO</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Avaliações -->
+    <section class="reviews">
+        <div class="container">
+            <h2 class="section-title">O que eles <span>Dizem</span></h2>
+            <div id="lista-avaliacoes" class="reviews-grid">
+                <!-- Avaliações de 5 estrelas serão inseridas aqui -->
+            </div>
+
+            <!-- Formulário de Avaliação -->
+            <div class="add-review">
+                <h3>Deixe sua Avaliação</h3>
+                <form id="form-review">
+                    <input type="text" id="rev-nome" placeholder="Nome" required>
+                    <select id="rev-nota">
+                        <option value="5">5 Estrelas</option>
+                        <option value="4">4 Estrelas</option>
+                        <option value="3">3 Estrelas</option>
+                        <option value="2">2 Estrelas</option>
+                        <option value="1">1 Estrela</option>
+                    </select>
+                    <textarea id="rev-comentario" placeholder="Escreva seu comentário..." required></textarea>
+                    <button type="submit" class="btn-secondary">Enviar Comentário</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Sandro do Corte. Todos os direitos reservados.</p>
+            <!-- Botão Admin Discreto -->
+            <button id="btn-admin-login" class="admin-access-btn" onclick="toggleAdmin()"><i class="fas fa-lock"></i></button>
+        </div>
+    </footer>
+
+    <!-- Área Administrativa (Modal) -->
+    <div id="admin-panel" class="admin-modal">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2>Painel do <span>Administrador</span></h2>
+                <button onclick="toggleAdmin()" class="close-admin">&times;</button>
+            </div>
+            <div class="admin-table-container">
+                <table id="tabela-admin">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Telefone</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-admin-agendamentos">
+                        <!-- Conteúdo gerado via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
