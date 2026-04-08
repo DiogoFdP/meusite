@@ -1,196 +1,182 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandro do Corte | Barbearia Premium</title>
+    <title>Especialista em Acabamentos Finos | ES</title>
+    
+    <link rel="icon" href="favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#1E3A8A',    /* Azul Profissional */
+                            dark: '#1e293b',    /* Cinza Grafite */
+                            light: '#f8fafc',   /* Fundo claro */
+                            green: '#25D366'    /* WhatsApp Verde */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
-    <!-- Fontes -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <!-- Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-brand-light text-brand-dark font-sans antialiased overflow-x-hidden">
 
-    <!-- Botão WhatsApp Flutuante -->
-    <a href="https://wa.me/5527996313345" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Header -->
-    <header>
-        <nav class="container">
-            <div class="logo">SANDRO<span>DOCORTE</span></div>
-            <ul class="nav-links">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#galeria">Estilos</a></li>
-                <li><a href="#agendar" class="btn-agendar-nav">AGENDAR</a></li>
-            </ul>
-        </nav>
+    <!-- NAVBAR -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-brand-blue text-white flex items-center justify-center rounded-lg font-heading font-bold text-xl">DP</div>
+                <h1 class="text-xl font-heading font-bold tracking-tight hidden sm:block text-brand-blue">Revestimento e Acabamento</h1>
+            </div>
+            <button onclick="openWhatsApp('Olá! Vim pelo site e gostaria de um orçamento para minha obra.')" class="bg-brand-green hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-full transition-colors flex items-center gap-2 shadow-lg">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Falar com Especialista
+            </button>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container hero-content">
-            <span class="urgency-tag"><i class="fas fa-fire"></i> Horários limitados para hoje!</span>
-            <h1>TRANSFORME SEU VISUAL, <br><span>ELEVE SUA MORAL.</span></h1>
-            <p>O melhor corte da região com atendimento exclusivo e ambiente moderno.</p>
-            <div class="hero-btns">
-                <a href="#agendar" class="btn-primary">AGENDAR AGORA</a>
-                <a href="#sobre" class="btn-secondary">SAIBA MAIS</a>
-            </div>
+    <!-- HERO SECTION -->
+    <section class="relative bg-brand-dark h-[85vh] flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=2069&auto=format&fit=crop" alt="Porcelanato Fino" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto scroll-reveal">
+            <span class="inline-block bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-semibold tracking-wide mb-6 uppercase shadow-md">Serra, Vitória e Vila Velha - ES</span>
+            <h2 class="text-4xl md:text-6xl font-heading font-bold text-white mb-6 drop-shadow-lg leading-tight">O Luxo que a sua Obra Merece. A Precisão que Você Exige.</h2>
+            <p class="text-lg md:text-xl text-gray-200 mb-10 drop-shadow-md font-light">Especialista em porcelanatos de grandes formatos, bancadas em porcelanato e revestimentos premium. Transformamos projetos em realidade sem dor de cabeça.</p>
+            <button onclick="openWhatsApp('Olá! Gostaria de agendar uma visita técnica para avaliar minha obra.')" class="bg-brand-green hover:bg-green-600 text-white font-bold py-4 px-10 rounded-full transition-transform transform hover:scale-105 shadow-2xl text-lg flex items-center justify-center gap-3 mx-auto w-full sm:w-auto">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Solicitar Orçamento Gratuito
+            </button>
         </div>
     </section>
 
-    <!-- Benefícios -->
-    <section class="benefits">
-        <div class="container grid-3">
-            <div class="benefit-card">
-                <i class="fas fa-cut"></i>
-                <h3>Mestres Barbeiros</h3>
-                <p>Técnicas modernas e acabamento impecável.</p>
-            </div>
-            <div class="benefit-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Agilidade</h3>
-                <p>Sem filas. Agendou, chegou, cortou.</p>
-            </div>
-            <div class="benefit-card">
-                <i class="fas fa-couch"></i>
-                <h3>Conforto</h3>
-                <p>Ambiente climatizado e café de cortesia.</p>
-            </div>
+    <!-- PORTFÓLIO -->
+    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 scroll-reveal">
+            <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Qualidade em Cada Detalhe</h3>
+            <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
+            <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Confira alguns dos nossos projetos recentes envolvendo cortes especiais, meia esquadria e assentamento de alto padrão.</p>
         </div>
+        
+        <!-- Galeria Injetada via JS -->
+        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </section>
 
-    <!-- Sobre -->
-    <section id="sobre" class="about">
-        <div class="container grid-2">
-            <div class="about-img">
-                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80" alt="Barbearia">
+    <!-- AVALIAÇÕES (SOCIAL PROOF) -->
+    <section class="bg-gray-100 py-20 border-t border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">O que nossos clientes dizem</h3>
+                <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
             </div>
-            <div class="about-text">
-                <h2>Sobre a <span>Barbearia</span></h2>
-                <p>A Sandro do Corte não é apenas um lugar para cortar o cabelo. É um espaço dedicado ao homem moderno que valoriza seu tempo e sua imagem. Localizada no coração da cidade, nossa missão é proporcionar uma experiência de cuidado e relaxamento única.</p>
-                <div class="stats">
-                    <div><strong>+1000</strong><p>Clientes Satisfeitos</p></div>
-                    <div><strong>10</strong><p>Anos de Experiência</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
+            
+            <!-- Avaliações Nota 5 injetadas via JS -->
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 scroll-reveal mb-8"></div>
 
-    <!-- Galeria -->
-    <section id="galeria" class="gallery">
-        <div class="container">
-            <h2 class="section-title">Galeria de <span>Estilos</span></h2>
-            <div class="gallery-grid">
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=400&q=80" alt="Corte 1"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1599351473299-282096f97002?auto=format&fit=crop&w=400&q=80" alt="Corte 2"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?auto=format&fit=crop&w=400&q=80" alt="Corte 3"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=400&q=80" alt="Corte 4"></div>
+            <!-- Botão Ver Mais (Controlado via JS) -->
+            <div id="show-more-container" class="text-center mb-16 hidden scroll-reveal">
+                <button onclick="toggleReviews()" id="show-more-btn" class="text-brand-blue font-bold hover:text-blue-800 transition-colors flex items-center justify-center gap-2 mx-auto bg-blue-50 py-3 px-6 rounded-full border border-blue-100 shadow-sm hover:shadow">
+                    Ver mais avaliações
+                    <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
             </div>
-        </div>
-    </section>
 
-    <!-- Agendamento -->
-    <section id="agendar" class="booking">
-        <div class="container">
-            <div class="booking-wrapper">
-                <div class="booking-info">
-                    <h2>Reserve seu <span>Horário</span></h2>
-                    <p>Escolha a data e o horário. Nós cuidamos do resto.</p>
-                    <div class="contact-details">
-                        <p><i class="fas fa-phone"></i> (27) 99631-3345</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Rua Principal, 123 - Centro</p>
+            <!-- FORMULÁRIO PARA NOVA AVALIAÇÃO -->
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-2xl mx-auto scroll-reveal">
+                <h4 class="text-2xl font-heading font-bold text-brand-dark text-center mb-2">Avalie nosso trabalho</h4>
+                <p class="text-center text-gray-500 mb-6 text-sm">Sua opinião é muito importante para nós.</p>
+                
+                <form id="review-form" onsubmit="submitReview(event)" class="space-y-4">
+                    <!-- Seletor de Estrelas Interativo -->
+                    <div class="flex justify-center gap-2 mb-6" id="star-selector">
+                        <!-- Estrelas injetadas via JS -->
                     </div>
-                </div>
-                <form id="form-agendamento" class="booking-form">
-                    <input type="text" id="nome" placeholder="Seu Nome Completo" required>
-                    <input type="tel" id="telefone" placeholder="Seu Telefone (WhatsApp)" required>
-                    <div class="form-row">
-                        <input type="date" id="data" required>
-                        <select id="horario" required>
-                            <option value="">Selecione o Horário</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
+                    <input type="hidden" id="review-rating" value="5">
+                    
+                    <div>
+                        <input type="text" id="review-name" required placeholder="Seu Nome e Cidade (Ex: João - Serra)" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue transition-colors text-brand-dark">
                     </div>
-                    <button type="submit" class="btn-primary full-width">CONFIRMAR AGENDAMENTO</button>
+                    <div>
+                        <textarea id="review-text" required placeholder="Conte-nos como foi a experiência com nossa equipe..." rows="3" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue transition-colors text-brand-dark resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-blue hover:bg-blue-800 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg">
+                        Enviar Avaliação
+                    </button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Avaliações -->
-    <section class="reviews">
-        <div class="container">
-            <h2 class="section-title">O que eles <span>Dizem</span></h2>
-            <div id="lista-avaliacoes" class="reviews-grid">
-                <!-- Avaliações de 5 estrelas serão inseridas aqui -->
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+                    <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center rounded font-heading font-bold">D.P</div>
+                    <span class="text-xl font-heading font-bold text-white">Revestimento e Acabamento</span>
+                </div>
+                <p class="text-sm">Excelência e perfeição em assentamento de porcelanato e criação de bancadas no Espírito Santo.</p>
             </div>
-
-            <!-- Formulário de Avaliação -->
-            <div class="add-review">
-                <h3>Deixe sua Avaliação</h3>
-                <form id="form-review">
-                    <input type="text" id="rev-nome" placeholder="Nome" required>
-                    <select id="rev-nota">
-                        <option value="5">5 Estrelas</option>
-                        <option value="4">4 Estrelas</option>
-                        <option value="3">3 Estrelas</option>
-                        <option value="2">2 Estrelas</option>
-                        <option value="1">1 Estrela</option>
-                    </select>
-                    <textarea id="rev-comentario" placeholder="Escreva seu comentário..." required></textarea>
-                    <button type="submit" class="btn-secondary">Enviar Comentário</button>
-                </form>
+            <div>
+                <h4 class="text-white text-lg font-heading font-bold mb-4">Área de Atendimento</h4>
+                <ul class="space-y-2 text-sm">
+                    <li>✓ Serra, ES</li>
+                    <li>✓ Vitória, ES</li>
+                    <li>✓ Vila Velha, ES</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white text-lg font-heading font-bold mb-4">Contato Rápido</h4>
+                <button onclick="openWhatsApp('Olá!')" class="text-brand-green hover:text-white transition-colors text-xl font-bold flex items-center justify-center md:justify-start gap-2 w-full">
+                    (27) 99225-5770
+                </button>
+                <p class="text-sm mt-2">Atendimento de Seg a Sáb.</p>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Sandro do Corte. Todos os direitos reservados.</p>
-            <!-- Botão Admin Discreto -->
-            <button id="btn-admin-login" class="admin-access-btn" onclick="toggleAdmin()"><i class="fas fa-lock"></i></button>
+        <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm">
+            &copy; <span id="year"></span> Revestimento e Acabamento. Todos os direitos reservados.
         </div>
     </footer>
 
-    <!-- Área Administrativa (Modal) -->
-    <div id="admin-panel" class="admin-modal">
-        <div class="admin-content">
-            <div class="admin-header">
-                <h2>Painel do <span>Administrador</span></h2>
-                <button onclick="toggleAdmin()" class="close-admin">&times;</button>
+    <!-- BOTÃO WHATSAPP FLUTUANTE -->
+    <button onclick="openWhatsApp('Olá! Vim pelo site e preciso de um orçamento.')" class="fixed bottom-6 right-6 bg-brand-green text-white p-4 rounded-full shadow-2xl z-50 pulse-animation hover:bg-green-600 transition-colors" aria-label="Falar no WhatsApp">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </button>
+
+    <!-- ADMIN MODAL (OCULTO) -->
+    <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[60] hidden flex items-center justify-center p-4 modal-fade">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-brand-blue p-5 flex justify-between items-center text-white">
+                <h2 class="text-xl font-heading font-bold">Painel Admin - Avaliações</h2>
+                <button onclick="closeAdmin()" class="text-white hover:text-gray-200 text-2xl font-bold">✕</button>
             </div>
-            <div class="admin-table-container">
-                <table id="tabela-admin">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Hora</th>
-                            <th>Cliente</th>
-                            <th>Telefone</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-admin-agendamentos">
-                        <!-- Conteúdo gerado via JS -->
-                    </tbody>
-                </table>
+            <div class="p-6 overflow-y-auto bg-gray-50 custom-scrollbar flex-1">
+                <p class="text-sm text-gray-500 mb-4">Todas as avaliações recebidas (visão exclusiva do administrador):</p>
+                <div id="admin-reviews-list" class="space-y-4"></div>
             </div>
         </div>
     </div>
 
+    <!-- Script Externo -->
     <script src="script.js"></script>
 </body>
 </html>
