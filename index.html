@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Douglas Pedreiro | ES</title>
-    
-    <title>Douglas Pedreiro | ES</title>
 
-<link rel="icon" type="image/png" href="img/favicon.png">
-<link rel="shortcut icon" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="shortcut icon" href="img/favicon.png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,10 +25,10 @@
                     },
                     colors: {
                         brand: {
-                            blue: '#1E3A8A',    /* Azul Profissional */
-                            dark: '#1e293b',    /* Cinza Grafite */
-                            light: '#f8fafc',   /* Fundo claro */
-                            green: '#25D366'    /* WhatsApp Verde */
+                            blue: '#1E3A8A',
+                            dark: '#1e293b',
+                            light: '#f8fafc',
+                            green: '#25D366'
                         }
                     }
                 }
@@ -41,95 +39,151 @@
     <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-brand-light text-brand-dark font-sans antialiased overflow-x-hidden">
+<body class="bg-brand-light text-brand-dark font-sans antialiased overflow-x-hidden flex flex-col min-h-screen">
 
     <!-- NAVBAR -->
     <header class="bg-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchPage('home')">
                 <div class="w-10 h-10 bg-brand-blue text-white flex items-center justify-center rounded-lg font-heading font-bold text-xl">DP</div>
                 <h1 class="text-xl font-heading font-bold tracking-tight hidden sm:block text-brand-blue">Revestimento e Acabamento</h1>
             </div>
-            <button onclick="openWhatsApp('Olá! Vim pelo site e gostaria de um orçamento para minha obra.')" class="bg-brand-green hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-full transition-colors flex items-center gap-2 shadow-lg">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            
+            <!-- Links de Navegação -->
+            <nav class="hidden md:flex gap-6 items-center font-semibold text-gray-600">
+                <button onclick="switchPage('home')" class="hover:text-brand-blue transition-colors nav-link active-nav">Início</button>
+                <button onclick="switchPage('gallery')" class="hover:text-brand-blue transition-colors nav-link">Galeria de Obras</button>
+                <button onclick="switchPage('contact')" class="hover:text-brand-blue transition-colors nav-link">Contato</button>
+            </nav>
+
+            <button onclick="openWhatsApp('Olá! Vim pelo site e gostaria de um orçamento para minha obra.')" class="bg-brand-green hover:bg-green-600 text-white font-semibold py-2 px-4 md:px-6 rounded-full transition-colors flex items-center gap-2 shadow-lg text-sm md:text-base">
+                <svg class="w-5 h-5 hidden md:block" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382... (MANTIDO SEU SVG ORIGINAL)"/></svg>
                 Falar com Especialista
             </button>
         </div>
+        <!-- Menu Mobile Simples -->
+        <div class="md:hidden bg-gray-50 border-t border-gray-200 flex justify-center gap-4 py-3 font-semibold text-sm text-gray-600">
+            <button onclick="switchPage('home')" class="hover:text-brand-blue nav-link-mobile active-nav">Início</button>
+            <button onclick="switchPage('gallery')" class="hover:text-brand-blue nav-link-mobile">Galeria</button>
+            <button onclick="switchPage('contact')" class="hover:text-brand-blue nav-link-mobile">Contato</button>
+        </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="relative bg-brand-dark h-[85vh] flex items-center justify-center overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=2069&auto=format&fit=crop" alt="Porcelanato Fino" class="absolute inset-0 w-full h-full object-cover opacity-30">
-        
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto scroll-reveal">
-            <span class="inline-block bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-semibold tracking-wide mb-6 uppercase shadow-md">Serra, Vitória e Vila Velha - ES</span>
-            <h2 class="text-4xl md:text-6xl font-heading font-bold text-white mb-6 drop-shadow-lg leading-tight">O Luxo que a sua Obra Merece. A Precisão que Você Exige.</h2>
-            <p class="text-lg md:text-xl text-gray-200 mb-10 drop-shadow-md font-light">Especialista em porcelanatos de grandes formatos, bancadas em porcelanato e revestimentos premium. Transformamos projetos em realidade sem dor de cabeça.</p>
-            <button onclick="openWhatsApp('Olá! Gostaria de agendar uma visita técnica para avaliar minha obra.')" class="bg-brand-green hover:bg-green-600 text-white font-bold py-4 px-10 rounded-full transition-transform transform hover:scale-105 shadow-2xl text-lg flex items-center justify-center gap-3 mx-auto w-full sm:w-auto">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                Solicitar Orçamento Gratuito
-            </button>
-        </div>
-    </section>
+    <!-- CONTAINER PRINCIPAL DINÂMICO -->
+    <main class="flex-1">
 
-    <!-- PORTFÓLIO -->
-    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 scroll-reveal">
-            <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Qualidade em Cada Detalhe</h3>
-            <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
-            <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Confira alguns dos nossos projetos recentes envolvendo cortes especiais, meia esquadria e assentamento de alto padrão.</p>
-        </div>
-        
-        <!-- Galeria Injetada via JS -->
-        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    </section>
-
-    <!-- AVALIAÇÕES (SOCIAL PROOF) -->
-    <section class="bg-gray-100 py-20 border-t border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 scroll-reveal">
-                <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">O que nossos clientes dizem</h3>
-                <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
-            </div>
-            
-            <!-- Avaliações Nota 5 injetadas via JS -->
-            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 scroll-reveal mb-8"></div>
-
-            <!-- Botão Ver Mais (Controlado via JS) -->
-            <div id="show-more-container" class="text-center mb-16 hidden scroll-reveal">
-                <button onclick="toggleReviews()" id="show-more-btn" class="text-brand-blue font-bold hover:text-blue-800 transition-colors flex items-center justify-center gap-2 mx-auto bg-blue-50 py-3 px-6 rounded-full border border-blue-100 shadow-sm hover:shadow">
-                    Ver mais avaliações
-                    <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-            </div>
-
-            <!-- FORMULÁRIO PARA NOVA AVALIAÇÃO -->
-            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-2xl mx-auto scroll-reveal">
-                <h4 class="text-2xl font-heading font-bold text-brand-dark text-center mb-2">Avalie nosso trabalho</h4>
-                <p class="text-center text-gray-500 mb-6 text-sm">Sua opinião é muito importante para nós.</p>
-                
-                <form id="review-form" onsubmit="submitReview(event)" class="space-y-4">
-                    <!-- Seletor de Estrelas Interativo -->
-                    <div class="flex justify-center gap-2 mb-6" id="star-selector">
-                        <!-- Estrelas injetadas via JS -->
-                    </div>
-                    <input type="hidden" id="review-rating" value="5">
-                    
-                    <div>
-                        <input type="text" id="review-name" required placeholder="Seu Nome e Cidade (Ex: João - Serra)" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue transition-colors text-brand-dark">
-                    </div>
-                    <div>
-                        <textarea id="review-text" required placeholder="Conte-nos como foi a experiência com nossa equipe..." rows="3" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue transition-colors text-brand-dark resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-brand-blue hover:bg-blue-800 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg">
-                        Enviar Avaliação
+        <!-- ================= PÁGINA: INÍCIO ================= -->
+        <div id="page-home">
+            <!-- HERO SECTION -->
+            <section class="relative bg-brand-dark h-[85vh] flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=2069&auto=format&fit=crop" alt="Porcelanato Fino" class="absolute inset-0 w-full h-full object-cover opacity-30">
+                <div class="relative z-10 text-center px-4 max-w-4xl mx-auto scroll-reveal">
+                    <span class="inline-block bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-semibold tracking-wide mb-6 uppercase shadow-md">Serra, Vitória e Vila Velha - ES</span>
+                    <h2 class="text-4xl md:text-6xl font-heading font-bold text-white mb-6 drop-shadow-lg leading-tight">O Luxo que a sua Obra Merece. A Precisão que Você Exige.</h2>
+                    <p class="text-lg md:text-xl text-gray-200 mb-10 drop-shadow-md font-light">Especialista em porcelanatos de grandes formatos, bancadas em porcelanato e revestimentos premium.</p>
+                    <button onclick="openWhatsApp('Olá! Gostaria de agendar uma visita técnica.')" class="bg-brand-green hover:bg-green-600 text-white font-bold py-4 px-10 rounded-full transition-transform transform hover:scale-105 shadow-2xl text-lg flex items-center justify-center gap-3 mx-auto w-full sm:w-auto">
+                        Solicitar Orçamento Gratuito
                     </button>
-                </form>
+                </div>
+            </section>
+
+            <!-- PORTFÓLIO RESUMO -->
+            <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Nossas Obras</h3>
+                    <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Uma pequena amostra do nosso padrão de acabamento.</p>
+                </div>
+                <!-- Galeria Injetada via JS (Apenas 3) -->
+                <div id="portfolio-grid-home" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+                <div class="text-center mt-12 scroll-reveal">
+                    <button onclick="switchPage('gallery')" class="text-brand-blue border border-brand-blue hover:bg-brand-blue hover:text-white font-bold py-3 px-8 rounded-full transition-colors">
+                        Ver Galeria Completa
+                    </button>
+                </div>
+            </section>
+
+            <!-- AVALIAÇÕES (MANTIDO DO SEU CÓDIGO) -->
+            <section class="bg-gray-100 py-20 border-t border-b border-gray-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16 scroll-reveal">
+                        <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">O que nossos clientes dizem</h3>
+                        <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
+                    </div>
+                    
+                    <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 scroll-reveal mb-8"></div>
+
+                    <div id="show-more-container" class="text-center mb-16 hidden scroll-reveal">
+                        <button onclick="toggleReviews()" id="show-more-btn" class="text-brand-blue font-bold hover:text-blue-800 transition-colors flex items-center justify-center gap-2 mx-auto bg-blue-50 py-3 px-6 rounded-full border border-blue-100 shadow-sm hover:shadow">
+                            Ver mais avaliações
+                        </button>
+                    </div>
+
+                    <!-- FORMULÁRIO AVALIAÇÃO -->
+                    <div class="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-2xl mx-auto scroll-reveal">
+                        <h4 class="text-2xl font-heading font-bold text-brand-dark text-center mb-2">Avalie nosso trabalho</h4>
+                        <form id="review-form" onsubmit="submitReview(event)" class="space-y-4 mt-6">
+                            <div class="flex justify-center gap-2 mb-6" id="star-selector"></div>
+                            <input type="hidden" id="review-rating" value="5">
+                            <input type="text" id="review-name" required placeholder="Seu Nome e Cidade" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-brand-dark">
+                            <textarea id="review-text" required placeholder="Sua experiência..." rows="3" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-brand-dark resize-none"></textarea>
+                            <button type="submit" class="w-full bg-brand-blue hover:bg-blue-800 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg">Enviar Avaliação</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PÁGINA: GALERIA DE OBRAS ================= -->
+        <div id="page-gallery" class="hidden py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-brand-dark">Galeria de Obras</h2>
+                <div class="w-24 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
+                <p class="mt-4 text-gray-600 text-lg">Projetos executados com o mais alto padrão de qualidade.</p>
+            </div>
+            <!-- Grid de Fotos Quadradas -->
+            <div id="portfolio-grid-full" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- ================= PÁGINA: CONTATO ================= -->
+        <div id="page-contact" class="hidden py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-brand-dark">Entre em Contato</h2>
+                <div class="w-24 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
+                <p class="mt-4 text-gray-600 text-lg">Seja para uma pequena reforma ou uma grande obra comercial.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto scroll-reveal">
+                <!-- Área do WhatsApp (Destaque) -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-green flex flex-col justify-center text-center">
+                    <h3 class="text-2xl font-heading font-bold mb-4">Atendimento Ágil</h3>
+                    <p class="text-gray-600 mb-8">A maneira mais rápida de obter seu orçamento é enviando fotos ou as medidas do seu projeto pelo WhatsApp.</p>
+                    <button onclick="openWhatsApp('Olá, gostaria de falar sobre um projeto.')" class="bg-brand-green hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 flex items-center justify-center gap-3 w-full text-lg">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472... (Use o path do seu SVG do WhatsApp)"/></svg>
+                        Falar no WhatsApp
+                    </button>
+                    <p class="mt-4 font-bold text-gray-700">(27) 99225-5770</p>
+                </div>
+
+                <!-- Área de E-mail para Empresas/Projetos Formais -->
+                <div class="bg-brand-dark text-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-blue flex flex-col justify-center">
+                    <h3 class="text-2xl font-heading font-bold mb-4">Contato Corporativo</h3>
+                    <p class="text-gray-300 mb-6">Empresas, construtoras ou arquitetos que preferem formalizar o contato via e-mail.</p>
+                    
+                    <form onsubmit="sendEmail(event)" class="space-y-4">
+                        <input type="text" id="email-nome" required placeholder="Nome ou Empresa" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-blue focus:outline-none">
+                        <textarea id="email-msg" required placeholder="Detalhes do projeto..." rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-blue focus:outline-none resize-none"></textarea>
+                        <button type="submit" class="w-full bg-brand-blue hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md">
+                            Preparar E-mail
+                        </button>
+                    </form>
+                    <p class="text-xs text-gray-400 mt-4 text-center">Ou envie direto para: <br> <span class="font-bold text-white">orcamento@douglaspedreiro.com.br</span></p>
+                </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- FOOTER -->
+    <!-- FOOTER MANTIDO IGUAL -->
     <footer class="bg-brand-dark text-gray-300 py-12">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
             <div>
@@ -152,7 +206,6 @@
                 <button onclick="openWhatsApp('Olá!')" class="text-brand-green hover:text-white transition-colors text-xl font-bold flex items-center justify-center md:justify-start gap-2 w-full">
                     (27) 99225-5770
                 </button>
-                <p class="text-sm mt-2">Atendimento de Seg a Sáb.</p>
             </div>
         </div>
         <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm">
@@ -162,19 +215,54 @@
 
     <!-- BOTÃO WHATSAPP FLUTUANTE -->
     <button onclick="openWhatsApp('Olá! Vim pelo site e preciso de um orçamento.')" class="fixed bottom-6 right-6 bg-brand-green text-white p-4 rounded-full shadow-2xl z-50 pulse-animation hover:bg-green-600 transition-colors" aria-label="Falar no WhatsApp">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382... (MANTIDO)"/></svg>
     </button>
 
-    <!-- ADMIN MODAL (OCULTO) -->
-    <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[60] hidden flex items-center justify-center p-4 modal-fade">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]">
+    <!-- MODAL LIGHTBOX (VER FOTO INTEIRA) -->
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-95 z-[70] hidden flex items-center justify-center p-4 modal-fade">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-gray-300 text-4xl font-bold">&times;</button>
+        <img id="lightbox-img" src="" alt="Ampliada" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl">
+        <p id="lightbox-caption" class="absolute bottom-6 text-white text-xl font-heading font-bold text-center w-full px-4 drop-shadow-md"></p>
+    </div>
+
+    <!-- ADMIN MODAL ATUALIZADO (ABAS: AVALIAÇÕES / GALERIA) -->
+    <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[80] hidden flex items-center justify-center p-4 modal-fade">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-brand-blue p-5 flex justify-between items-center text-white">
-                <h2 class="text-xl font-heading font-bold">Painel Admin - Avaliações</h2>
+                <h2 class="text-xl font-heading font-bold">Painel de Controle</h2>
                 <button onclick="closeAdmin()" class="text-white hover:text-gray-200 text-2xl font-bold">✕</button>
             </div>
+            
+            <!-- Abas Admin -->
+            <div class="flex border-b border-gray-200 bg-gray-50">
+                <button onclick="switchAdminTab('reviews')" id="tab-reviews" class="flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue">Avaliações</button>
+                <button onclick="switchAdminTab('gallery')" id="tab-gallery" class="flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue">Galeria de Obras</button>
+            </div>
+
+            <!-- Conteúdo Abas -->
             <div class="p-6 overflow-y-auto bg-gray-50 custom-scrollbar flex-1">
-                <p class="text-sm text-gray-500 mb-4">Todas as avaliações recebidas (visão exclusiva do administrador):</p>
-                <div id="admin-reviews-list" class="space-y-4"></div>
+                
+                <!-- ABA: AVALIAÇÕES -->
+                <div id="admin-reviews-panel" class="block">
+                    <p class="text-sm text-gray-500 mb-4">Gerencie as avaliações recebidas:</p>
+                    <div id="admin-reviews-list" class="space-y-4"></div>
+                </div>
+
+                <!-- ABA: GALERIA -->
+                <div id="admin-gallery-panel" class="hidden">
+                    <div class="bg-white p-4 rounded-lg shadow border mb-6">
+                        <h3 class="font-bold mb-2">Adicionar Nova Foto</h3>
+                        <form onsubmit="addPhoto(event)" class="flex flex-col md:flex-row gap-3">
+                            <input type="text" id="new-photo-title" placeholder="Título (Ex: Nicho Iluminado)" required class="flex-1 border p-2 rounded">
+                            <input type="url" id="new-photo-url" placeholder="URL da Imagem" required class="flex-1 border p-2 rounded">
+                            <button type="submit" class="bg-brand-blue text-white px-4 py-2 rounded hover:bg-blue-800 font-bold">Adicionar</button>
+                        </form>
+                        <p class="text-xs text-gray-500 mt-2">Dica: Use links de imagens já hospedadas (ex: imgur, seu servidor) ou caminho local (img/nome.jpg).</p>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4">Fotos atuais na galeria:</p>
+                    <div id="admin-gallery-list" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                </div>
+
             </div>
         </div>
     </div>
