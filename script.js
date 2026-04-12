@@ -4,7 +4,7 @@
 const PHONE_NUMBER = "5527992255770";
 
 const portfolio = [
-    { id: 1, title: "Bancada em Porcelanato", img: "img/bancada.jpg" },
+    { id: 1, title: "Bancadas", img: "img/bancada.jpg" },
     { id: 2, title: "Revestimento Banheiro", img: "img/banheiro.jpg" },
     { id: 3, title: "Porcelanato Grandes Formatos", img: "img/sala.jpg" },
     { id: 4, title: "Nicho", img: "img/nicho.jpg" },
