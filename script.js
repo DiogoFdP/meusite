@@ -1,11 +1,11 @@
 // --------------------------------------------------------
-// 1. DADOS (Mock)
+// 1. DADOS BASE E SALVAMENTO NA MEMÓRIA DO NAVEGADOR
 // --------------------------------------------------------
 const PHONE_NUMBER = "5527992255770";
 const EMAIL_ADDRESS = "orcamento@douglaspedreiro.com.br";
 
-// ARRAY DA GALERIA: A ordem aqui é EXATAMENTE a ordem que aparece no site.
-let portfolio = [
+// Dados Padrão Iniciais
+const defaultPortfolio = [
     { id: 6, title: "Piso Amadeirado", img: "img/amadeirado.jpg" },
     { id: 5, title: "Cozinha Americana", img: "img/cozinha.jpg" },
     { id: 4, title: "Nicho", img: "img/nicho.jpg" },
@@ -14,18 +14,27 @@ let portfolio = [
     { id: 1, title: "Bancadas", img: "img/bancada.jpg" }
 ];
 
-let reviews = [
+const defaultReviews = [
     { id: 1, client: "Ivanete Bernardes", text: "Excelente profissional. Fui muito bem atendida. Serviço com muito capricho.", rating: 5 },
     { id: 2, client: "Alef Goulart", text: "Serviço maravilhoso e impecável. Deixou a obra limpa e nivelada.", rating: 5 },
     { id: 3, client: "Wanderson Araujo", text: "Trabalho limpo, organizado e bem executado. Excelente profissional.", rating: 5 },
     { id: 4, client: "Alexsander Braz", text: "Precisei de um serviço de última hora e fui surpreendido positivamente. Rapidez e qualidade.", rating: 5 }
 ];
 
+// Carrega os dados salvos do Navegador (ou usa o padrão se for a primeira vez)
+let portfolio = JSON.parse(localStorage.getItem('dp_portfolio')) || defaultPortfolio;
+let reviews = JSON.parse(localStorage.getItem('dp_reviews')) || defaultReviews;
+
+// FUNÇÃO MESTRE PARA SALVAR ALTERAÇÕES (Para não sumir ao recarregar a página)
+function saveDataLocally() {
+    localStorage.setItem('dp_portfolio', JSON.stringify(portfolio));
+    localStorage.setItem('dp_reviews', JSON.stringify(reviews));
+}
+
 let isReviewsExpanded = false;
-let currentSelectedRating = 5; // Variável corrigida para guardar as estrelas selecionadas
 
 // --------------------------------------------------------
-// 2. NAVEGAÇÃO SPA (Troca de Páginas)
+// 2. NAVEGAÇÃO SPA
 // --------------------------------------------------------
 function switchPage(pageId) {
     document.getElementById('page-home').classList.add('hidden');
@@ -75,7 +84,7 @@ const getStars = (rating) => {
 // --------------------------------------------------------
 function renderPortfolio() {
     const containerHome = document.getElementById('portfolio-grid-home');
-    const amostra = portfolio.slice(0, 3); // Pega as 3 primeiras do array
+    const amostra = portfolio.slice(0, 3);
     
     containerHome.innerHTML = amostra.map((item, index) => `
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-2 scroll-reveal" style="transition-delay: ${index * 100}ms">
@@ -112,14 +121,13 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 
 // --------------------------------------------------------
-// 5. AVALIAÇÕES (Correção do Bug das Estrelas)
+// 5. AVALIAÇÕES E ESTRELAS CORRIGIDAS
 // --------------------------------------------------------
 function renderPublicReviews() {
     const container = document.getElementById('reviews-container');
     const btnContainer = document.getElementById('show-more-container');
     const btn = document.getElementById('show-more-btn');
     
-    // Regra mantida: Apenas nota 5 aparece no site
     const topReviews = reviews.filter(r => r.rating === 5);
     const limit = 3;
     const reviewsToShow = isReviewsExpanded ? topReviews : topReviews.slice(0, limit);
@@ -149,39 +157,45 @@ function toggleReviews() {
 
 function initStarSelector() {
     const container = document.getElementById('star-selector');
+    const inputRating = document.getElementById('review-rating'); // Pega o input escondido
     
-    const renderInteractiveStars = (hoverVal = 0) => {
-        const currentVal = hoverVal || currentSelectedRating;
+    const drawStars = (currentVal) => {
         container.innerHTML = '';
         for(let i=1; i<=5; i++) {
             const star = document.createElement('div');
             star.className = 'cursor-pointer p-1 transition-transform hover:scale-125';
             star.innerHTML = `<svg class="w-10 h-10 ${i <= currentVal ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
             
-            star.onmouseover = () => renderInteractiveStars(i);
-            star.onmouseleave = () => renderInteractiveStars();
-            // Correção: Atualiza a variável global ao clicar
+            star.onmouseover = () => drawStars(i); // Efeito visual ao passar o mouse
+            star.onmouseleave = () => drawStars(parseInt(inputRating.value)); // Volta pra nota selecionada
+            
             star.onclick = () => { 
-                currentSelectedRating = i; 
-                renderInteractiveStars(); 
+                inputRating.value = i; // Trava o valor no input escondido
+                drawStars(i); 
             };
             container.appendChild(star);
         }
     };
-    renderInteractiveStars();
+    drawStars(parseInt(inputRating.value));
 }
 
 function submitReview(e) {
     e.preventDefault();
+    
+    // Pega exatamente a nota que ficou travada no input
+    const notaEscolhida = parseInt(document.getElementById('review-rating').value);
+
     reviews.unshift({ 
         id: Date.now(), 
         client: document.getElementById('review-name').value, 
         text: document.getElementById('review-text').value, 
-        rating: currentSelectedRating // Usa a nota selecionada de verdade
+        rating: notaEscolhida 
     });
     
+    saveDataLocally(); // Salva na memória do navegador
+
     e.target.reset();
-    currentSelectedRating = 5; // Reseta para a próxima pessoa
+    document.getElementById('review-rating').value = 5; // Reseta as estrelas pro próximo
     initStarSelector();
     
     alert("Avaliação enviada com sucesso! Obrigado pelo feedback.");
@@ -216,13 +230,8 @@ function switchAdminTab(tab) {
     document.getElementById('admin-reviews-panel').classList.toggle('hidden', tab !== 'reviews');
     document.getElementById('admin-gallery-panel').classList.toggle('hidden', tab !== 'gallery');
     
-    document.getElementById('tab-reviews').className = tab === 'reviews' 
-        ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" 
-        : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
-        
-    document.getElementById('tab-gallery').className = tab === 'gallery' 
-        ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" 
-        : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
+    document.getElementById('tab-reviews').className = tab === 'reviews' ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
+    document.getElementById('tab-gallery').className = tab === 'gallery' ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
 }
 
 function renderAdminData() {
@@ -238,7 +247,6 @@ function renderAdminData() {
     `).join('');
 
     const galContainer = document.getElementById('admin-gallery-list');
-    // Adicionados atributos de Drag & Drop
     galContainer.innerHTML = portfolio.map((p, index) => `
         <div draggable="true" 
              ondragstart="handleDragStart(event, ${index})" 
@@ -249,12 +257,10 @@ function renderAdminData() {
             <img src="${p.img}" class="w-full h-24 object-cover rounded mb-2 pointer-events-none">
             <p class="text-xs font-bold truncate">${p.title}</p>
             
-            <!-- Botão Editar -->
             <button onclick="editPhotoTitle(${p.id})" class="absolute top-1 left-1 bg-blue-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity" title="Editar Título">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
             </button>
             
-            <!-- Botão Apagar -->
             <button onclick="deletePhoto(${p.id})" class="absolute top-1 right-1 bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity" title="Apagar Foto">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -265,32 +271,33 @@ function renderAdminData() {
 function deleteReview(id) {
     if(confirm("Apagar esta avaliação?")) {
         reviews = reviews.filter(r => r.id !== id);
+        saveDataLocally();
         renderAdminData();
         renderPublicReviews(); 
     }
 }
 
-// Editar Título
 function editPhotoTitle(id) {
     const photo = portfolio.find(p => p.id === id);
     if (!photo) return;
     const newTitle = prompt("Digite o novo título da foto:", photo.title);
     if (newTitle !== null && newTitle.trim() !== "") {
         photo.title = newTitle.trim();
+        saveDataLocally();
         renderAdminData();
-        renderPortfolio(); // Atualiza no site na hora
+        renderPortfolio();
     }
 }
 
-// Adicionar Foto (Sempre vai para o Topo do site)
 function addPhoto(e) {
     e.preventDefault();
-    portfolio.unshift({ // unshift coloca no começo do Array
+    portfolio.unshift({ 
         id: Date.now(),
         title: document.getElementById('new-photo-title').value,
         img: document.getElementById('new-photo-url').value
     });
     e.target.reset();
+    saveDataLocally();
     renderAdminData();
     renderPortfolio();
 }
@@ -298,22 +305,22 @@ function addPhoto(e) {
 function deletePhoto(id) {
     if(confirm("Deseja apagar esta foto da galeria?")) {
         portfolio = portfolio.filter(p => p.id !== id);
+        saveDataLocally();
         renderAdminData();
         renderPortfolio();
     }
 }
 
-// --- LÓGICA DE ARRASTAR E SOLTAR (DRAG & DROP) ---
+// LÓGICA DE ARRASTAR E SOLTAR (DRAG & DROP)
 let draggedItemIndex = null;
 
 function handleDragStart(e, index) {
     draggedItemIndex = index;
-    // Pequeno delay para o item ficar transparente enquanto arrasta
     setTimeout(() => e.target.classList.add('opacity-50'), 0);
 }
 
 function handleDragOver(e) {
-    e.preventDefault(); // Permite soltar
+    e.preventDefault(); 
     const targetCard = e.target.closest('div[draggable]');
     if(targetCard) targetCard.classList.add('drag-over');
 }
@@ -330,13 +337,17 @@ function handleDrop(e, dropTargetIndex) {
 
     if (draggedItemIndex === null || draggedItemIndex === dropTargetIndex) return;
 
-    // Retira do lugar antigo e coloca no lugar novo
+    // Troca as posições
     const draggedItem = portfolio.splice(draggedItemIndex, 1)[0];
     portfolio.splice(dropTargetIndex, 0, draggedItem);
 
-    // Atualiza tudo
+    // Salva na memória do navegador na hora que solta o mouse
+    saveDataLocally(); 
+    
+    // Atualiza a tela do admin e a galeria do site instantaneamente
     renderAdminData();
     renderPortfolio();
+    
     draggedItemIndex = null;
 }
 

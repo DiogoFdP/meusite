@@ -69,12 +69,10 @@
         </div>
     </header>
 
-    <!-- CONTAINER PRINCIPAL DINÂMICO -->
     <main class="flex-1">
 
         <!-- ================= PÁGINA: INÍCIO ================= -->
         <div id="page-home">
-            <!-- HERO SECTION -->
             <section class="relative bg-brand-dark h-[85vh] flex items-center justify-center overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=2069&auto=format&fit=crop" alt="Porcelanato Fino" class="absolute inset-0 w-full h-full object-cover opacity-30">
                 <div class="relative z-10 text-center px-4 max-w-4xl mx-auto scroll-reveal">
@@ -87,14 +85,12 @@
                 </div>
             </section>
 
-            <!-- PORTFÓLIO RESUMO -->
             <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 scroll-reveal">
                     <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Nossas Obras</h3>
                     <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
                     <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Uma pequena amostra do nosso padrão de acabamento.</p>
                 </div>
-                <!-- Galeria Injetada via JS (Apenas 3) -->
                 <div id="portfolio-grid-home" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
                 <div class="text-center mt-12 scroll-reveal">
                     <button onclick="switchPage('gallery')" class="text-brand-blue border border-brand-blue hover:bg-brand-blue hover:text-white font-bold py-3 px-8 rounded-full transition-colors">
@@ -123,8 +119,11 @@
                     <div class="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-2xl mx-auto scroll-reveal">
                         <h4 class="text-2xl font-heading font-bold text-brand-dark text-center mb-2">Avalie nosso trabalho</h4>
                         <form id="review-form" onsubmit="submitReview(event)" class="space-y-4 mt-6">
+                            
                             <div class="flex justify-center gap-2 mb-6" id="star-selector"></div>
-                            <!-- Retirado o input hidden com value 5 fixo para evitar erro -->
+                            <!-- ESTE É O CAMPO QUE GARANTE QUE A NOTA SEJA SALVA CORRETAMENTE -->
+                            <input type="hidden" id="review-rating" value="5">
+
                             <input type="text" id="review-name" required placeholder="Seu Nome e Cidade" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-brand-dark">
                             <textarea id="review-text" required placeholder="Sua experiência..." rows="3" class="w-full px-4 py-3 bg-brand-light border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-brand-dark resize-none"></textarea>
                             <button type="submit" class="w-full bg-brand-blue hover:bg-blue-800 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg">Enviar Avaliação</button>
@@ -153,7 +152,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto scroll-reveal">
-                <!-- Área do WhatsApp (Destaque) -->
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-green flex flex-col justify-center text-center">
                     <h3 class="text-2xl font-heading font-bold mb-4">Atendimento Ágil</h3>
                     <p class="text-gray-600 mb-8">A maneira mais rápida de obter seu orçamento é enviando fotos ou as medidas do seu projeto pelo WhatsApp.</p>
@@ -164,7 +162,6 @@
                     <p class="mt-4 font-bold text-gray-700">(27) 99225-5770</p>
                 </div>
 
-                <!-- Área de E-mail -->
                 <div class="bg-brand-dark text-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-blue flex flex-col justify-center">
                     <h3 class="text-2xl font-heading font-bold mb-4">Contato Corporativo</h3>
                     <p class="text-gray-300 mb-6">Empresas, construtoras ou arquitetos que preferem formalizar o contato via e-mail.</p>
@@ -239,13 +236,11 @@
 
             <div class="p-6 overflow-y-auto bg-gray-50 custom-scrollbar flex-1">
                 
-                <!-- ABA AVALIAÇÕES -->
                 <div id="admin-reviews-panel" class="block">
                     <p class="text-sm text-gray-500 mb-4">Gerencie as avaliações recebidas. Apenas as de nota 5 aparecem no site público.</p>
                     <div id="admin-reviews-list" class="space-y-4"></div>
                 </div>
 
-                <!-- ABA GALERIA -->
                 <div id="admin-gallery-panel" class="hidden">
                     <div class="bg-white p-4 rounded-lg shadow border mb-6">
                         <h3 class="font-bold mb-2">Adicionar Nova Foto</h3>
