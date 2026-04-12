@@ -49,7 +49,7 @@
     border-radius: 0.75rem;
     cursor: pointer;
     position: relative;
-    aspect-ratio: 1 / 1; /* Força o quadrado na Galeria */
+    aspect-ratio: 1 / 1; 
 }
 .gallery-img-wrapper::after {
     content: "🔎 Ampliar";
@@ -82,4 +82,17 @@
 .active-nav {
     color: #1E3A8A;
     border-bottom: 2px solid #1E3A8A;
+}
+
+/* Efeitos Drag & Drop do Admin */
+.drag-over {
+    border: 2px dashed #1E3A8A !important;
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+.cursor-move {
+    cursor: grab;
+}
+.cursor-move:active {
+    cursor: grabbing;
 }
