@@ -47,8 +47,12 @@ db.collection("dados").doc("site").onSnapshot((doc) => {
         portfolio = data.portfolio || defaultPortfolio;
         reviews = data.reviews || defaultReviews;
         
+        // 1. O Firebase entrega os dados e cria o HTML
         renderPortfolio();
         renderPublicReviews();
+        
+        // 2. CORREÇÃO: Avisa a animação para procurar as novas fotos e exibi-las!
+        setTimeout(initScrollAnimations, 100);
         
         // Atualiza a tela do admin se estiver aberta
         if (!document.getElementById('admin-modal').classList.contains('hidden')) {
@@ -61,7 +65,6 @@ db.collection("dados").doc("site").onSnapshot((doc) => {
         saveDataGlobally();
     }
 });
-
 function saveDataGlobally() {
     db.collection("dados").doc("site").set({
         portfolio: portfolio,
