@@ -43,13 +43,15 @@
 
     <!-- NAVBAR -->
     <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        
+        <!-- CABEÇALHO COMPUTADOR/TABLET (Fica oculto no celular) -->
+        <div class="hidden md:flex max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchPage('home')">
                 <div class="bg-brand-blue text-white flex items-center justify-center rounded-lg font-heading font-bold text-sm md:text-base px-4 py-2">Douglas Pedreiro</div>
                 <h1 class="text-xl font-heading font-bold tracking-tight hidden lg:block text-brand-blue">Revestimento e Acabamento</h1>
             </div>
             
-            <nav class="hidden md:flex gap-6 items-center font-semibold text-gray-600">
+            <nav class="flex gap-6 items-center font-semibold text-gray-600">
                 <button onclick="switchPage('home')" class="hover:text-brand-blue transition-colors nav-link active-nav">Início</button>
                 <button onclick="switchPage('gallery')" class="hover:text-brand-blue transition-colors nav-link">Galeria de Obras</button>
                 <button onclick="switchPage('contact')" class="hover:text-brand-blue transition-colors nav-link">Contato</button>
@@ -60,7 +62,9 @@
                 Orçamento no whatsapp agora
             </button>
         </div>
-        <div class="md:hidden bg-gray-50 border-t border-gray-200 flex justify-center gap-4 py-3 font-semibold text-sm text-gray-600">
+
+        <!-- CABEÇALHO CELULAR (Aparece só no celular: Menu Limpo e Centralizado) -->
+        <div class="md:hidden bg-white flex justify-center gap-8 py-4 font-semibold text-base text-gray-600">
             <button onclick="switchPage('home')" class="hover:text-brand-blue nav-link-mobile active-nav">Início</button>
             <button onclick="switchPage('gallery')" class="hover:text-brand-blue nav-link-mobile">Galeria</button>
             <button onclick="switchPage('contact')" class="hover:text-brand-blue nav-link-mobile">Contato</button>
@@ -166,7 +170,7 @@
                     <div onclick="handleSecretAdminClick()" class="bg-brand-blue text-white flex items-center justify-center rounded px-3 py-1 font-heading font-bold cursor-pointer select-none">Douglas Pedreiro</div>
                     <span class="text-xl font-heading font-bold text-white hidden sm:block">Revestimento</span>
                 </div>
-                <p class="text-sm">Excelência e perfeição em assentamento de porcelanato e cerâmicas no Espírito Santo.</p>
+                <p class="text-sm">Excelência e perfeição em assentamento de porcelanato e criação de bancadas no Espírito Santo.</p>
             </div>
             <div>
                 <h4 class="text-white text-lg font-heading font-bold mb-4">Área de Atendimento</h4>
@@ -200,7 +204,7 @@
         <p id="lightbox-caption" class="absolute bottom-6 text-white text-xl font-heading font-bold text-center w-full px-4 drop-shadow-md"></p>
     </div>
 
-    <!-- ADMIN MODAL (Apenas Galeria Agora) -->
+    <!-- ADMIN MODAL (Apenas Galeria) -->
     <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[80] hidden flex items-center justify-center p-4 modal-fade">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-brand-blue p-5 flex justify-between items-center text-white">
@@ -227,7 +231,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
-    <!-- SEU SCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>
