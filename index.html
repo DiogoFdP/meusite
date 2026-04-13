@@ -244,11 +244,19 @@
                 <div id="admin-gallery-panel" class="hidden">
                     <div class="bg-white p-4 rounded-lg shadow border mb-6">
                         <h3 class="font-bold mb-2">Adicionar Nova Foto</h3>
-                        <form onsubmit="addPhoto(event)" class="flex flex-col md:flex-row gap-3">
-                            <input type="text" id="new-photo-title" placeholder="Título (Ex: Nicho Iluminado)" required class="flex-1 border p-2 rounded">
-                            <input type="url" id="new-photo-url" placeholder="URL da Imagem" required class="flex-1 border p-2 rounded">
-                            <button type="submit" class="bg-brand-blue text-white px-4 py-2 rounded hover:bg-blue-800 font-bold">Adicionar</button>
-                        </form>
+                        <form onsubmit="addPhoto(event)" class="flex flex-col gap-3">
+    <div class="flex flex-col md:flex-row gap-3">
+        <input type="text" id="new-photo-title" placeholder="Título (Ex: Banheiro Clean)" required class="flex-1 border p-2 rounded">
+        <input type="url" id="new-photo-url" placeholder="URL da Imagem ou use o botão ao lado" class="flex-1 border p-2 rounded">
+    </div>
+    <div class="flex items-center gap-2">
+        <label class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-pointer font-bold text-sm">
+            <span>📁 Escolher do Aparelho</span>
+            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+        </label>
+        <button type="submit" class="flex-1 bg-brand-blue text-white px-4 py-2 rounded hover:bg-blue-800 font-bold">Salvar na Galeria</button>
+    </div>
+</form>
                     </div>
                     <p class="text-sm text-gray-500 mb-4">Fotos atuais (<b>Segure e arraste</b> as fotos para mudar a ordem no site):</p>
                     <div id="admin-gallery-list" class="grid grid-cols-2 md:grid-cols-4 gap-4 pb-10"></div>
