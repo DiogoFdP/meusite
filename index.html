@@ -68,7 +68,6 @@
     </header>
 
     <main class="flex-1">
-
         <!-- PÁGINA: INÍCIO -->
         <div id="page-home">
             <section class="relative bg-brand-dark h-[85vh] flex items-center justify-center overflow-hidden">
@@ -141,13 +140,15 @@
             <div class="text-center mb-12 scroll-reveal">
                 <h2 class="text-4xl md:text-5xl font-heading font-bold text-brand-dark">Entre em Contato</h2>
                 <div class="w-24 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
-                <p class="mt-4 text-gray-600 text-lg">Seja para uma pequena reforma ou uma grande obra comercial.</p>
+                <p class="mt-4 text-gray-600 text-lg">Centralizamos nosso atendimento no WhatsApp para maior rapidez.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto scroll-reveal">
+                
+                <!-- OPÇÃO 1: Contato Rápido Direto -->
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-green flex flex-col justify-center text-center">
                     <h3 class="text-2xl font-heading font-bold mb-4">Atendimento Ágil</h3>
-                    <p class="text-gray-600 mb-8">A maneira mais rápida de obter seu orçamento é enviando fotos ou as medidas do seu projeto pelo WhatsApp.</p>
+                    <p class="text-gray-600 mb-8">A maneira mais rápida de obter seu orçamento é enviar uma mensagem ou fotos do seu projeto diretamente no nosso número.</p>
                     <button onclick="openWhatsApp('Olá, gostaria de falar sobre um projeto.')" class="bg-brand-green hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 flex items-center justify-center gap-3 w-full text-lg">
                         <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                         Falar no WhatsApp
@@ -155,18 +156,20 @@
                     <p class="mt-4 font-bold text-gray-700">(27) 99225-5770</p>
                 </div>
 
+                <!-- OPÇÃO 2: Formulário Pré-preenchido pro WhatsApp -->
                 <div class="bg-brand-dark text-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-blue flex flex-col justify-center">
-                    <h3 class="text-2xl font-heading font-bold mb-4">Contato Corporativo</h3>
-                    <p class="text-gray-300 mb-6">Empresas, construtoras ou arquitetos que preferem formalizar o contato via e-mail.</p>
+                    <h3 class="text-2xl font-heading font-bold mb-4">Orçamento Detalhado</h3>
+                    <p class="text-gray-300 mb-6">Descreva o que você precisa e inicie o atendimento já com os detalhes do seu projeto na mensagem.</p>
                     
-                    <form onsubmit="sendEmail(event)" class="space-y-4">
-                        <input type="text" id="email-nome" required placeholder="Nome ou Empresa" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-blue focus:outline-none">
-                        <textarea id="email-msg" required placeholder="Detalhes do projeto..." rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-blue focus:outline-none resize-none"></textarea>
-                        <button type="submit" class="w-full bg-brand-blue hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md">
-                            Preparar E-mail
+                    <form onsubmit="sendWhatsAppForm(event)" class="space-y-4">
+                        <input type="text" id="wa-nome" required placeholder="Seu Nome Completo" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-green focus:outline-none">
+                        <textarea id="wa-msg" required placeholder="Detalhes do projeto (ex: Assentamento de porcelanato 80x80 na sala de 20m²...)" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-brand-green focus:outline-none resize-none"></textarea>
+                        
+                        <button type="submit" class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-colors shadow-md flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            Enviar pelo WhatsApp
                         </button>
                     </form>
-                    <p class="text-xs text-gray-400 mt-4 text-center">Ou envie direto para: <br> <span class="font-bold text-white">orcamento@douglaspedreiro.com.br</span></p>
                 </div>
             </div>
         </div>
@@ -177,7 +180,6 @@
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
             <div>
                 <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
-                    <!-- ACESSO SECRETO: CLIQUE 5 VEZES NESTA LOGO -->
                     <div onclick="handleSecretAdminClick()" class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center rounded font-heading font-bold cursor-pointer select-none">D.P</div>
                     <span class="text-xl font-heading font-bold text-white">Revestimento e Acabamento</span>
                 </div>
@@ -238,7 +240,6 @@
                 <div id="admin-gallery-panel" class="hidden">
                     <div class="bg-white p-4 rounded-lg shadow border mb-6">
                         <h3 class="font-bold mb-2">Adicionar Nova Foto</h3>
-                        <!-- FORMULÁRIO ATUALIZADO PARA ACEITAR UPLOAD DE ARQUIVO -->
                         <form onsubmit="addPhoto(event)" class="flex flex-col md:flex-row gap-3 items-center">
                             <input type="text" id="new-photo-title" placeholder="Título (Ex: Nicho Iluminado)" required class="flex-1 border p-2 rounded w-full">
                             <input type="file" id="new-photo-file" accept="image/*" required class="flex-1 border p-2 rounded w-full text-sm">
