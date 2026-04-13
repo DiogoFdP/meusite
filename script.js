@@ -209,7 +209,7 @@ function submitReview(e) {
         rating: nota 
     });
     
-    await loadData();
+    saveDataLocally();
     e.target.reset();
     document.getElementById('review-rating').value = 5;
     initStarSelector();
@@ -326,65 +326,45 @@ function editPhotoTitle(id) {
 }
 
 // UPLOAD DE IMAGEM COM COMPRESSÃO
-function addPhoto(e) {
+async function addPhoto(e) {
     e.preventDefault();
-    const titleInput = document.getElementById('new-photo-title').value;
-const title = titleInput || '';
-    const fileInput = document.getElementById('new-photo-file');
-    const file = fileInput.files[0];
-
-    if (!file) return;
-
+    
+    const file = document.getElementById('new-photo-file').files[0];
+    const title = document.getElementById('new-photo-title').value;
     const btn = document.getElementById('add-photo-btn');
-    btn.textContent = "Salvando...";
-    btn.disabled = true;
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 800;
-            const MAX_HEIGHT = 800;
-            let width = img.width;
-            let height = img.height;
+    if (!file) return alert("Selecione uma imagem!");
 
-            if (width > height) {
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                }
-            } else {
-                if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                }
-            }
-            
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            
-            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+    try {
+        btn.disabled = true;
+        btn.innerText = "Enviando...";
 
-            portfolio.unshift({ 
-                id: Date.now(),
-                title: title,
-                img: compressedDataUrl
-            });
-            
-            saveDataLocally();
-            e.target.reset();
-            renderAdminData();
-            renderPortfolio();
-            
-            btn.textContent = "Adicionar";
-            btn.disabled = false;
-        };
-        img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
+        // 1. Criar uma referência no Storage (caminho onde a foto vai ficar)
+        const storageRef = fb.ref(window.storage, 'galeria/' + Date.now() + "_" + file.name);
+
+        // 2. Fazer o upload do arquivo
+        const snapshot = await fb.uploadBytes(storageRef, file);
+
+        // 3. Pegar a URL pública da foto
+        const downloadURL = await fb.getDownloadURL(snapshot.ref);
+
+        // 4. Salvar no Firestore
+        await fb.addDoc(fb.collection(db, "portfolio"), {
+            title: title || "Obra Douglas",
+            img: downloadURL,
+            createdAt: new Date()
+        });
+
+        alert("Foto enviada com sucesso!");
+        e.target.reset();
+        loadData(); // Recarrega a galeria na tela
+    } catch (error) {
+        console.error(error);
+        alert("Erro ao enviar imagem: " + error.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Adicionar";
+    }
 }
 
 function deletePhoto(id) {
