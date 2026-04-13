@@ -4,7 +4,6 @@
 const PHONE_NUMBER = "5527992255770";
 const EMAIL_ADDRESS = "orcamento@douglaspedreiro.com.br";
 
-// Dados Padrão Iniciais
 const defaultPortfolio = [
     { id: 6, title: "Piso Amadeirado", img: "img/amadeirado.jpg" },
     { id: 5, title: "Cozinha Americana", img: "img/cozinha.jpg" },
@@ -21,11 +20,9 @@ const defaultReviews = [
     { id: 4, client: "Alexsander Braz", text: "Precisei de um serviço de última hora e fui surpreendido positivamente. Rapidez e qualidade.", rating: 5 }
 ];
 
-// Carrega os dados salvos do Navegador (ou usa o padrão se for a primeira vez)
 let portfolio = JSON.parse(localStorage.getItem('dp_portfolio')) || defaultPortfolio;
 let reviews = JSON.parse(localStorage.getItem('dp_reviews')) || defaultReviews;
 
-// FUNÇÃO MESTRE PARA SALVAR ALTERAÇÕES (Para não sumir ao recarregar a página)
 function saveDataLocally() {
     localStorage.setItem('dp_portfolio', JSON.stringify(portfolio));
     localStorage.setItem('dp_reviews', JSON.stringify(reviews));
@@ -121,30 +118,28 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 
 // --------------------------------------------------------
-// 5. AVALIAÇÕES E ESTRELAS CORRIGIDAS
+// 5. AVALIAÇÕES 
 // --------------------------------------------------------
 function renderPublicReviews() {
     const container = document.getElementById('reviews-container');
     const btnContainer = document.getElementById('show-more-container');
-    const btn = document.getElementById('show-more-btn');
     
-    const topReviews = reviews.filter(r => r.rating === 5);
+    const topReviews = reviews.filter(r => Number(r.rating) === 5);
     const limit = 3;
     const reviewsToShow = isReviewsExpanded ? topReviews : topReviews.slice(0, limit);
     
-    container.innerHTML = reviewsToShow.map((r, index) => `
-        <div class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-brand-blue relative" style="transition-delay: ${(index % limit) * 50}ms">
+    container.innerHTML = reviewsToShow.map(r => `
+        <div class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-brand-blue relative mb-4">
             <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white rounded-full p-2 shadow-md">
-                <div class="flex">${getStars(r.rating)}</div>
+                <div class="flex">${getStars(5)}</div>
             </div>
             <p class="text-gray-600 italic mt-4 text-center leading-relaxed text-sm">"${r.text}"</p>
             <p class="font-heading font-bold text-brand-dark text-center mt-6">— ${r.client}</p>
-        </div>
-    `).join('');
+        </div>`).join('');
 
     if (topReviews.length > limit) {
         btnContainer.classList.remove('hidden');
-        btn.innerHTML = isReviewsExpanded ? "Ver menos avaliações" : "Ver mais avaliações";
+        document.getElementById('show-more-btn').textContent = isReviewsExpanded ? "Ver menos" : "Ver mais avaliações";
     } else {
         btnContainer.classList.add('hidden');
     }
@@ -157,7 +152,7 @@ function toggleReviews() {
 
 function initStarSelector() {
     const container = document.getElementById('star-selector');
-    const inputRating = document.getElementById('review-rating'); // Pega o input escondido
+    const inputRating = document.getElementById('review-rating');
     
     const drawStars = (currentVal) => {
         container.innerHTML = '';
@@ -165,57 +160,71 @@ function initStarSelector() {
             const star = document.createElement('div');
             star.className = 'cursor-pointer p-1 transition-transform hover:scale-125';
             star.innerHTML = `<svg class="w-10 h-10 ${i <= currentVal ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
-            
-            star.onmouseover = () => drawStars(i); // Efeito visual ao passar o mouse
-            star.onmouseleave = () => drawStars(parseInt(inputRating.value)); // Volta pra nota selecionada
-            
-            star.onclick = () => { 
-                inputRating.value = i; // Trava o valor no input escondido
-                drawStars(i); 
-            };
+            star.onclick = () => { inputRating.value = i; drawStars(i); };
             container.appendChild(star);
         }
     };
-    drawStars(parseInt(inputRating.value));
+    drawStars(inputRating.value);
 }
 
 function submitReview(e) {
     e.preventDefault();
+    const nota = parseInt(document.getElementById('review-rating').value);
     
-    // Pega exatamente a nota que ficou travada no input
-    const notaEscolhida = parseInt(document.getElementById('review-rating').value);
-
     reviews.unshift({ 
         id: Date.now(), 
         client: document.getElementById('review-name').value, 
         text: document.getElementById('review-text').value, 
-        rating: notaEscolhida 
+        rating: nota 
     });
     
-    saveDataLocally(); // Salva na memória do navegador
-
+    saveDataLocally();
     e.target.reset();
-    document.getElementById('review-rating').value = 5; // Reseta as estrelas pro próximo
+    document.getElementById('review-rating').value = 5;
     initStarSelector();
-    
-    alert("Avaliação enviada com sucesso! Obrigado pelo feedback.");
+    alert("Avaliação recebida! Se for nota 5, ela aparecerá no site em breve.");
     renderPublicReviews();
     renderAdminData();
 }
 
 // --------------------------------------------------------
-// 6. ADMIN E DRAG & DROP
+// 6. ADMIN E ACESSO SECRETO
 // --------------------------------------------------------
+
+// Acesso pelo PC (Shift + L)
 document.addEventListener('keydown', (e) => {
     if (e.shiftKey && (e.key === 'l' || e.key === 'L')) {
         e.preventDefault();
-        if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
-            openAdmin();
-        } else {
-            alert("Senha incorreta.");
-        }
+        requestAdminAccess();
     }
 });
+
+// Acesso pelo Celular (5 Cliques no Logo do Rodapé)
+let secretClickCount = 0;
+let secretClickTimer;
+
+function handleSecretAdminClick() {
+    secretClickCount++;
+    clearTimeout(secretClickTimer);
+    
+    if (secretClickCount >= 5) {
+        secretClickCount = 0; // Reseta para a próxima vez
+        requestAdminAccess();
+    } else {
+        // Se a pessoa demorar mais de 2 segundos entre um clique e outro, zera a contagem
+        secretClickTimer = setTimeout(() => {
+            secretClickCount = 0;
+        }, 2000); 
+    }
+}
+
+function requestAdminAccess() {
+    if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
+        openAdmin();
+    } else {
+        alert("Senha incorreta.");
+    }
+}
 
 function openAdmin() {
     document.getElementById('admin-modal').classList.remove('hidden');
@@ -289,17 +298,70 @@ function editPhotoTitle(id) {
     }
 }
 
+// UPLOAD DE IMAGEM COM COMPRESSÃO
 function addPhoto(e) {
     e.preventDefault();
-    portfolio.unshift({ 
-        id: Date.now(),
-        title: document.getElementById('new-photo-title').value,
-        img: document.getElementById('new-photo-url').value
-    });
-    e.target.reset();
-    saveDataLocally();
-    renderAdminData();
-    renderPortfolio();
+    const titleInput = document.getElementById('new-photo-title').value;
+    const fileInput = document.getElementById('new-photo-file');
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
+    const btn = document.getElementById('add-photo-btn');
+    btn.textContent = "Salvando...";
+    btn.disabled = true;
+
+    // Leitor de arquivo nativo do navegador
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            // Criando Canvas para reduzir o tamanho da imagem
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800; // Resolução ideal para a web
+            const MAX_HEIGHT = 800;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Converte a imagem pra texto comprimido (qualidade 70%)
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+            // Adiciona na galeria
+            portfolio.unshift({ 
+                id: Date.now(),
+                title: titleInput,
+                img: compressedDataUrl
+            });
+            
+            saveDataLocally();
+            e.target.reset();
+            renderAdminData();
+            renderPortfolio();
+            
+            btn.textContent = "Adicionar";
+            btn.disabled = false;
+        };
+        img.src = event.target.result;
+    };
+    // Lê o arquivo escolhido do PC/Celular
+    reader.readAsDataURL(file);
 }
 
 function deletePhoto(id) {
@@ -311,7 +373,7 @@ function deletePhoto(id) {
     }
 }
 
-// LÓGICA DE ARRASTAR E SOLTAR (DRAG & DROP)
+// DRAG E DROP (Arratar Fotos)
 let draggedItemIndex = null;
 
 function handleDragStart(e, index) {
@@ -337,14 +399,10 @@ function handleDrop(e, dropTargetIndex) {
 
     if (draggedItemIndex === null || draggedItemIndex === dropTargetIndex) return;
 
-    // Troca as posições
     const draggedItem = portfolio.splice(draggedItemIndex, 1)[0];
     portfolio.splice(dropTargetIndex, 0, draggedItem);
 
-    // Salva na memória do navegador na hora que solta o mouse
     saveDataLocally(); 
-    
-    // Atualiza a tela do admin e a galeria do site instantaneamente
     renderAdminData();
     renderPortfolio();
     
