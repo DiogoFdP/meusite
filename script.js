@@ -1,22 +1,20 @@
 // --------------------------------------------------------
-// 1. CONFIGURAÇÃO DO FIREBASE (COLE O CÓDIGO DO SITE AQUI!)
+// 1. CONFIGURAÇÃO DO FIREBASE
 // --------------------------------------------------------
 const firebaseConfig = {
-  apiKey: "AIzaSyB4GuLtPZML1HL-YHBZOqEFi0oVbhdgmFs",
-  authDomain: "douglas-site-fec83.firebaseapp.com",
-  projectId: "douglas-site-fec83",
-  storageBucket: "douglas-site-fec83.firebasestorage.app",
-  messagingSenderId: "919058405326",
-  appId: "1:919058405326:web:d5118aa27679dc1cfdfd9f"
+    apiKey: "COLE_SUA_API_KEY_AQUI",
+    authDomain: "COLE_SEU_AUTH_DOMAIN_AQUI",
+    projectId: "COLE_SEU_PROJECT_ID_AQUI",
+    storageBucket: "COLE_SEU_STORAGE_BUCKET_AQUI",
+    messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID_AQUI",
+    appId: "COLE_SEU_APP_ID_AQUI"
 };
 
-
-// Inicializa o Firebase e o Banco de Dados Global
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // --------------------------------------------------------
-// 2. DADOS PADRÃO E SINCRONIZAÇÃO EM TEMPO REAL
+// 2. DADOS PADRÃO (PORTFÓLIO E AVALIAÇÕES FIXAS)
 // --------------------------------------------------------
 const PHONE_NUMBER = "5527992255770";
 
@@ -29,47 +27,43 @@ const defaultPortfolio = [
     { id: 1, title: "Bancadas", img: "img/bancada.jpg" }
 ];
 
-const defaultReviews = [
-    { id: 1, client: "Ivanete Bernardes", text: "Excelente profissional. Fui muito bem atendida. Serviço com muito capricho.", rating: 5 },
-    { id: 2, client: "Alef Goulart", text: "Serviço maravilhoso e impecável. Deixou a obra limpa e nivelada.", rating: 5 },
-    { id: 3, client: "Wanderson Araujo", text: "Trabalho limpo, organizado e bem executado. Excelente profissional.", rating: 5 },
-    { id: 4, client: "Alexsander Braz", text: "Precisei de um serviço de última hora e fui surpreendido positivamente. Rapidez e qualidade.", rating: 5 }
+// As 10 avaliações fixadas (Nunca mudam e não vão para o Firebase)
+const fixedReviews = [
+    { client: "Ivanete Bernardes", text: "Excelente profissional. Encontrei o contato do Douglas aqui na internet. Foi atencioso desde o primeiro contato. O serviço era a colocação de piso na parede da cozinha, onde tem a pia. Foi honesto e cobrou preço justo de mercado. Realizou a obra com capricho e atenção. Sempre chegando no horário ou avisando em caso de algum imprevisto. Ao final, deixou a obra limpa e organizada.", rating: 5 },
+    { client: "Alef Goulart", text: "Serviço maravilhoso, impecável. Deixou a obra toda limpinha, o assentamento do piso bem nivelado e muito caprichado! Entregou antes do prazo previsto e com preço super justo. Recomendo muito o Douglas! Não há decepção com ele.", rating: 5 },
+    { client: "Marianna Gomes", text: "Quero deixar aqui minha avaliação super positiva sobre o trabalho do Douglas. Ele reformou todo o meu apartamento, e a experiência foi excelente do início ao fim. O Douglas é um profissional muito competente, prestativo e sempre muito solícito. Além disso, é extremamente pontual e cumpre os prazos combinados, algo que faz toda a diferença em uma obra.", rating: 5 },
+    { client: "Wanderson Araújo", text: "Serviço realizado com muita qualidade e pontualidade. Trabalho limpo e organizado. Excelente profissional.", rating: 5 },
+    { client: "Bruno Donatelli", text: "Excelente profissional, trabalha muito bem, organizado e pontual com os horários. Sempre deixa o local limpo e, o mais importante, o porcelanato ficou bem nivelado e a obra foi entregue dentro do prazo. Preço justo, profissional honesto. Fica a recomendação!", rating: 5 },
+    { client: "Ivan Pk", text: "Quero deixar meu feedback para o Douglas pelo excelente trabalho realizado. Um profissional extremamente competente, que executa tudo com muita qualidade e atenção aos detalhes. Além disso, mantém a obra sempre limpa e organizada, o que faz toda a diferença no dia a dia. Demonstra muito profissionalismo, responsabilidade e compromisso com o cliente. Recomendo sem dúvidas.", rating: 5 },
+    { client: "Alex Sander Braz", text: "Chamei de última hora para um serviço de emergência e fui surpreendido. O Douglas fez o trabalho rápido e muito bem feito. Serviço top, recomendo demais!", rating: 5 },
+    { client: "Pablo Loyola", text: "Douglas é 1000%! Podem contratar, é confiável. Faz o serviço sem receber adiantado, não pede nem um real antes, só depois que entrega tudo pronto. E o melhor: faz um excelente trabalho!", rating: 5 },
+    { client: "Marcos Borba", text: "O Douglas é um excelente profissional. Comprometido com os horários e com uma programação compatível com a demanda de atividades. Recomendo.", rating: 5 },
+    { client: "Juliam Fabio", text: "Profissional comprometido e pontual. Planejou e executou o serviço com perfeição. Serviço rápido e limpo.", rating: 5 }
 ];
 
 let portfolio = [];
-let reviews = [];
 let isReviewsExpanded = false;
 
-// Monitora o Banco de Dados. Se mudar no celular, o PC atualiza sozinho!
+// Monitora o Firebase APENAS para a Galeria
 db.collection("dados").doc("site").onSnapshot((doc) => {
     if (doc.exists) {
-        const data = doc.data();
-        portfolio = data.portfolio || defaultPortfolio;
-        reviews = data.reviews || defaultReviews;
-        
-        // 1. O Firebase entrega os dados e cria o HTML
+        portfolio = doc.data().portfolio || defaultPortfolio;
         renderPortfolio();
-        renderPublicReviews();
-        
-        // 2. CORREÇÃO: Avisa a animação para procurar as novas fotos e exibi-las!
         setTimeout(initScrollAnimations, 100);
         
-        // Atualiza a tela do admin se estiver aberta
         if (!document.getElementById('admin-modal').classList.contains('hidden')) {
             renderAdminData();
         }
     } else {
-        // Se o banco estiver vazio, ele salva os dados padrão na primeira vez
         portfolio = defaultPortfolio;
-        reviews = defaultReviews;
         saveDataGlobally();
     }
 });
+
 function saveDataGlobally() {
     db.collection("dados").doc("site").set({
-        portfolio: portfolio,
-        reviews: reviews
-    }).catch(error => console.error("Erro ao salvar os dados:", error));
+        portfolio: portfolio
+    }).catch(error => console.error("Erro ao salvar galeria:", error));
 }
 
 // --------------------------------------------------------
@@ -110,24 +104,14 @@ function sendWhatsAppForm(e) {
     e.target.reset();
 }
 
-const getStars = (rating) => {
-    let stars = '';
-    for(let i=1; i<=5; i++) {
-        stars += `<svg class="w-5 h-5 ${i <= rating ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
-    }
-    return stars;
-};
-
 // --------------------------------------------------------
-// 5. GALERIA E LIGHTBOX (Com títulos opcionais)
+// 5. GALERIA E LIGHTBOX
 // --------------------------------------------------------
 function renderPortfolio() {
     const containerHome = document.getElementById('portfolio-grid-home');
     const amostra = portfolio.slice(0, 3);
     
-    // Na Home
     containerHome.innerHTML = amostra.map((item, index) => {
-        // Se a pessoa digitou um título, cria a tag HTML do título. Se não, fica vazio.
         const titleHtml = item.title ? `<h4 class="font-heading font-bold text-brand-dark text-center mt-4 mb-2">${item.title}</h4>` : '';
         return `
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-2 scroll-reveal" style="transition-delay: ${index * 100}ms">
@@ -138,7 +122,6 @@ function renderPortfolio() {
         </div>`;
     }).join('');
 
-    // Na Galeria Completa
     const containerFull = document.getElementById('portfolio-grid-full');
     containerFull.innerHTML = portfolio.map((item) => {
         const titleHtml = item.title ? `<h4 class="font-heading font-bold text-brand-dark text-center mt-3 mb-1 text-sm md:text-base truncate px-2">${item.title}</h4>` : '';
@@ -154,7 +137,6 @@ function renderPortfolio() {
 
 function openLightbox(imgSrc, title) {
     document.getElementById('lightbox-img').src = imgSrc;
-    // Só exibe texto se existir título
     document.getElementById('lightbox-caption').textContent = title || ''; 
     document.getElementById('lightbox').classList.remove('hidden');
 }
@@ -168,15 +150,22 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 
 // --------------------------------------------------------
-// 6. AVALIAÇÕES 
+// 6. AVALIAÇÕES FIXAS
 // --------------------------------------------------------
+const getStars = (rating) => {
+    let stars = '';
+    for(let i=1; i<=5; i++) {
+        stars += `<svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
+    }
+    return stars;
+};
+
 function renderPublicReviews() {
     const container = document.getElementById('reviews-container');
-    const btnContainer = document.getElementById('show-more-container');
+    const btn = document.getElementById('show-more-btn');
     
-    const topReviews = reviews.filter(r => Number(r.rating) === 5);
     const limit = 3;
-    const reviewsToShow = isReviewsExpanded ? topReviews : topReviews.slice(0, limit);
+    const reviewsToShow = isReviewsExpanded ? fixedReviews : fixedReviews.slice(0, limit);
     
     container.innerHTML = reviewsToShow.map(r => `
         <div class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-brand-blue relative mb-4">
@@ -187,12 +176,8 @@ function renderPublicReviews() {
             <p class="font-heading font-bold text-brand-dark text-center mt-6">— ${r.client}</p>
         </div>`).join('');
 
-    if (topReviews.length > limit) {
-        btnContainer.classList.remove('hidden');
-        document.getElementById('show-more-btn').textContent = isReviewsExpanded ? "Ver menos" : "Ver mais avaliações";
-    } else {
-        btnContainer.classList.add('hidden');
-    }
+    document.getElementById('show-more-container').classList.remove('hidden');
+    btn.textContent = isReviewsExpanded ? "Ver menos avaliações" : "Ver mais avaliações";
 }
 
 function toggleReviews() {
@@ -200,44 +185,8 @@ function toggleReviews() {
     renderPublicReviews();
 }
 
-function initStarSelector() {
-    const container = document.getElementById('star-selector');
-    const inputRating = document.getElementById('review-rating');
-    
-    const drawStars = (currentVal) => {
-        container.innerHTML = '';
-        for(let i=1; i<=5; i++) {
-            const star = document.createElement('div');
-            star.className = 'cursor-pointer p-1 transition-transform hover:scale-125';
-            star.innerHTML = `<svg class="w-10 h-10 ${i <= currentVal ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
-            star.onclick = () => { inputRating.value = i; drawStars(i); };
-            container.appendChild(star);
-        }
-    };
-    drawStars(inputRating.value);
-}
-
-function submitReview(e) {
-    e.preventDefault();
-    const nota = parseInt(document.getElementById('review-rating').value);
-    
-    reviews.unshift({ 
-        id: Date.now(), 
-        client: document.getElementById('review-name').value, 
-        text: document.getElementById('review-text').value, 
-        rating: nota 
-    });
-    
-    saveDataGlobally(); // Envia pro Firebase
-    
-    e.target.reset();
-    document.getElementById('review-rating').value = 5;
-    initStarSelector();
-    alert("Avaliação recebida! Se for nota 5, ela aparecerá no site em breve.");
-}
-
 // --------------------------------------------------------
-// 7. ADMIN E ACESSO SECRETO
+// 7. ADMIN E ACESSO SECRETO (Apenas Galeria)
 // --------------------------------------------------------
 document.addEventListener('keydown', (e) => {
     if (e.shiftKey && (e.key === 'l' || e.key === 'L')) {
@@ -262,45 +211,21 @@ function handleSecretAdminClick() {
 }
 
 function requestAdminAccess() {
-    if (prompt("Acesso Administrativo. Digite a senha:") === "Dioguinho2") {
-        openAdmin();
+    if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
+        document.getElementById('admin-modal').classList.remove('hidden');
+        renderAdminData();
     } else {
         alert("Senha incorreta.");
     }
-}
-
-function openAdmin() {
-    document.getElementById('admin-modal').classList.remove('hidden');
-    renderAdminData();
 }
 
 function closeAdmin() {
     document.getElementById('admin-modal').classList.add('hidden');
 }
 
-function switchAdminTab(tab) {
-    document.getElementById('admin-reviews-panel').classList.toggle('hidden', tab !== 'reviews');
-    document.getElementById('admin-gallery-panel').classList.toggle('hidden', tab !== 'gallery');
-    
-    document.getElementById('tab-reviews').className = tab === 'reviews' ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
-    document.getElementById('tab-gallery').className = tab === 'gallery' ? "flex-1 py-3 font-bold text-brand-blue border-b-2 border-brand-blue" : "flex-1 py-3 font-bold text-gray-500 hover:text-brand-blue";
-}
-
 function renderAdminData() {
-    const revContainer = document.getElementById('admin-reviews-list');
-    revContainer.innerHTML = reviews.map(r => `
-        <div class="bg-white p-4 rounded border-l-4 ${r.rating === 5 ? 'border-green-500' : 'border-yellow-400'} flex justify-between items-center">
-            <div>
-                <p class="font-bold flex items-center gap-2">${r.client} <span class="bg-gray-100 text-xs px-2 rounded text-gray-600">Nota: ${r.rating}</span></p>
-                <p class="text-sm">"${r.text}"</p>
-            </div>
-            <button onclick="deleteReview(${r.id})" class="text-red-500 bg-red-50 px-3 py-1 rounded">Apagar</button>
-        </div>
-    `).join('');
-
     const galContainer = document.getElementById('admin-gallery-list');
     galContainer.innerHTML = portfolio.map((p, index) => {
-        // Título visual pro Admin
         const displayTitle = p.title ? p.title : "Sem título";
         return `
         <div draggable="true" 
@@ -323,13 +248,6 @@ function renderAdminData() {
     }).join('');
 }
 
-function deleteReview(id) {
-    if(confirm("Apagar esta avaliação?")) {
-        reviews = reviews.filter(r => r.id !== id);
-        saveDataGlobally();
-    }
-}
-
 function editPhotoTitle(id) {
     const photo = portfolio.find(p => p.id === id);
     if (!photo) return;
@@ -340,10 +258,9 @@ function editPhotoTitle(id) {
     }
 }
 
-// UPLOAD DE IMAGEM COM COMPRESSÃO
 function addPhoto(e) {
     e.preventDefault();
-    const titleInput = document.getElementById('new-photo-title').value.trim(); // Pega título, mesmo vazio
+    const titleInput = document.getElementById('new-photo-title').value.trim();
     const fileInput = document.getElementById('new-photo-file');
     const file = fileInput.files[0];
 
@@ -364,15 +281,9 @@ function addPhoto(e) {
             let height = img.height;
 
             if (width > height) {
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                }
+                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
             } else {
-                if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                }
+                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
             }
             
             canvas.width = width;
@@ -384,13 +295,12 @@ function addPhoto(e) {
 
             portfolio.unshift({ 
                 id: Date.now(),
-                title: titleInput, // Agora salva vazio se a pessoa não preencheu nada
+                title: titleInput,
                 img: compressedDataUrl
             });
             
-            saveDataGlobally(); // Manda pro Firebase
-            
-            e.target.reset(); // Limpa o campinho
+            saveDataGlobally();
+            e.target.reset();
             btn.textContent = "Adicionar";
             btn.disabled = false;
         };
@@ -406,30 +316,14 @@ function deletePhoto(id) {
     }
 }
 
-// DRAG E DROP
 let draggedItemIndex = null;
-
-function handleDragStart(e, index) {
-    draggedItemIndex = index;
-    setTimeout(() => e.target.classList.add('opacity-50'), 0);
-}
-
-function handleDragOver(e) {
-    e.preventDefault(); 
-    const targetCard = e.target.closest('div[draggable]');
-    if(targetCard) targetCard.classList.add('drag-over');
-}
-
-function handleDragLeave(e) {
-    const targetCard = e.target.closest('div[draggable]');
-    if(targetCard) targetCard.classList.remove('drag-over');
-}
-
+function handleDragStart(e, index) { draggedItemIndex = index; setTimeout(() => e.target.classList.add('opacity-50'), 0); }
+function handleDragOver(e) { e.preventDefault(); const t = e.target.closest('div[draggable]'); if(t) t.classList.add('drag-over'); }
+function handleDragLeave(e) { const t = e.target.closest('div[draggable]'); if(t) t.classList.remove('drag-over'); }
 function handleDrop(e, dropTargetIndex) {
     e.preventDefault();
-    const targetCard = e.target.closest('div[draggable]');
-    if(targetCard) targetCard.classList.remove('drag-over');
-
+    const t = e.target.closest('div[draggable]');
+    if(t) t.classList.remove('drag-over');
     if (draggedItemIndex === null || draggedItemIndex === dropTargetIndex) return;
 
     const draggedItem = portfolio.splice(draggedItemIndex, 1)[0];
@@ -457,6 +351,6 @@ function initScrollAnimations() {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
-    initStarSelector();
+    renderPublicReviews();
     switchPage('home'); 
 });
