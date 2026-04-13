@@ -262,7 +262,7 @@ function handleSecretAdminClick() {
 }
 
 function requestAdminAccess() {
-    if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
+    if (prompt("Acesso Administrativo. Digite a senha:") === "Dioguinho2") {
         openAdmin();
     } else {
         alert("Senha incorreta.");
