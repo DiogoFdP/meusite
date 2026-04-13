@@ -303,6 +303,7 @@ function editPhotoTitle(id) {
 function addPhoto(e) {
     e.preventDefault();
     const titleInput = document.getElementById('new-photo-title').value;
+const title = titleInput || '';
     const fileInput = document.getElementById('new-photo-file');
     const file = fileInput.files[0];
 
@@ -343,7 +344,7 @@ function addPhoto(e) {
 
             portfolio.unshift({ 
                 id: Date.now(),
-                title: titleInput,
+                title: title,
                 img: compressedDataUrl
             });
             
