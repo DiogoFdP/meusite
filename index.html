@@ -35,29 +35,7 @@
             }
         }
     </script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  // ADICIONE ESTA LINHA:
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-  const firebaseConfig = {
-    apiKey: "SEU_API_KEY",
-    authDomain: "SEU_AUTH",
-    projectId: "SEU_PROJECT_ID",
-    storageBucket: "SEU_BUCKET",
-    messagingSenderId: "SEU_MSG_ID",
-    appId: "SEU_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app); // INICIALIZE O STORAGE
-
-  window.db = db;
-  window.storage = storage; // TORNE GLOBAL
-  window.fb = { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, ref, uploadBytes, getDownloadURL };
-</script>
     <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -110,7 +88,9 @@
                     <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
                     <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Uma pequena amostra do nosso padrão de acabamento.</p>
                 </div>
+                <!-- ID para injeção via JS -->
                 <div id="portfolio-grid-home" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+                
                 <div class="text-center mt-12 scroll-reveal">
                     <button onclick="switchPage('gallery')" class="text-brand-blue border border-brand-blue hover:bg-brand-blue hover:text-white font-bold py-3 px-8 rounded-full transition-colors">
                         Ver Galeria Completa
@@ -154,6 +134,7 @@
                 <div class="w-24 h-1 bg-brand-blue mx-auto mt-4 rounded"></div>
                 <p class="mt-4 text-gray-600 text-lg">Projetos executados com o mais alto padrão de qualidade.</p>
             </div>
+            <!-- ID para injeção de todas as fotos -->
             <div id="portfolio-grid-full" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
@@ -165,9 +146,8 @@
                 <p class="mt-4 text-gray-600 text-lg">Centralizamos nosso atendimento no WhatsApp para maior rapidez.</p>
             </div>
 
-            <!-- Alterado para ocupar a tela centralizada com max-w-2xl ao invés de grid de 2 colunas -->
+            <!-- Centralizado -->
             <div class="max-w-2xl mx-auto scroll-reveal">
-                
                 <!-- Formulário Único Pré-preenchido pro WhatsApp -->
                 <div class="bg-brand-dark text-white p-8 md:p-10 rounded-2xl shadow-xl border-t-4 border-brand-blue flex flex-col justify-center">
                     <h3 class="text-2xl md:text-3xl font-heading font-bold mb-4 text-center">Orçamento Detalhado</h3>
@@ -259,7 +239,8 @@
                     <div class="bg-white p-4 rounded-lg shadow border mb-6">
                         <h3 class="font-bold mb-2">Adicionar Nova Foto</h3>
                         <form onsubmit="addPhoto(event)" class="flex flex-col md:flex-row gap-3 items-center">
-                            <input type="text" id="new-photo-title" placeholder="Título (opcional)" class="flex-1 border p-2 rounded w-full">
+                            <!-- O required FOI REMOVIDO DAQUI -->
+                            <input type="text" id="new-photo-title" placeholder="Título da foto (Opcional)" class="flex-1 border p-2 rounded w-full">
                             <input type="file" id="new-photo-file" accept="image/*" required class="flex-1 border p-2 rounded w-full text-sm">
                             <button type="submit" id="add-photo-btn" class="bg-brand-blue text-white px-6 py-2 rounded hover:bg-blue-800 font-bold w-full md:w-auto">Adicionar</button>
                         </form>
@@ -272,6 +253,11 @@
         </div>
     </div>
 
+    <!-- FIREBASE SDKS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- SEU SCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>

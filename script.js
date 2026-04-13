@@ -1,5 +1,22 @@
 // --------------------------------------------------------
-// 1. DADOS BASE E SALVAMENTO NA MEMÓRIA DO NAVEGADOR
+// 1. CONFIGURAÇÃO DO FIREBASE (COLE O CÓDIGO DO SITE AQUI!)
+// --------------------------------------------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyB4GuLtPZML1HL-YHBZOqEFi0oVbhdgmFs",
+  authDomain: "douglas-site-fec83.firebaseapp.com",
+  projectId: "douglas-site-fec83",
+  storageBucket: "douglas-site-fec83.firebasestorage.app",
+  messagingSenderId: "919058405326",
+  appId: "1:919058405326:web:d5118aa27679dc1cfdfd9f"
+};
+
+
+// Inicializa o Firebase e o Banco de Dados Global
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// --------------------------------------------------------
+// 2. DADOS PADRÃO E SINCRONIZAÇÃO EM TEMPO REAL
 // --------------------------------------------------------
 const PHONE_NUMBER = "5527992255770";
 
@@ -21,42 +38,39 @@ const defaultReviews = [
 
 let portfolio = [];
 let reviews = [];
-
-async function loadData() {
-    const portfolioSnap = await fb.getDocs(fb.collection(db, "portfolio"));
-    portfolio = portfolioSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    const reviewsSnap = await fb.getDocs(fb.collection(db, "reviews"));
-    reviews = reviewsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    renderPortfolio();
-    renderPublicReviews();
-}
-
-async function savePortfolioItem(item) {
-    await fb.addDoc(fb.collection(db, "portfolio"), item);
-    await loadData();
-}
-
-async function deletePortfolioItem(id) {
-    await fb.deleteDoc(fb.doc(db, "portfolio", id));
-    await loadData();
-}
-
-async function saveReviewItem(item) {
-    await fb.addDoc(fb.collection(db, "reviews"), item);
-    await loadData();
-}
-
-async function deleteReviewItem(id) {
-    await fb.deleteDoc(fb.doc(db, "reviews", id));
-    await loadData();
-}
-
 let isReviewsExpanded = false;
 
+// Monitora o Banco de Dados. Se mudar no celular, o PC atualiza sozinho!
+db.collection("dados").doc("site").onSnapshot((doc) => {
+    if (doc.exists) {
+        const data = doc.data();
+        portfolio = data.portfolio || defaultPortfolio;
+        reviews = data.reviews || defaultReviews;
+        
+        renderPortfolio();
+        renderPublicReviews();
+        
+        // Atualiza a tela do admin se estiver aberta
+        if (!document.getElementById('admin-modal').classList.contains('hidden')) {
+            renderAdminData();
+        }
+    } else {
+        // Se o banco estiver vazio, ele salva os dados padrão na primeira vez
+        portfolio = defaultPortfolio;
+        reviews = defaultReviews;
+        saveDataGlobally();
+    }
+});
+
+function saveDataGlobally() {
+    db.collection("dados").doc("site").set({
+        portfolio: portfolio,
+        reviews: reviews
+    }).catch(error => console.error("Erro ao salvar os dados:", error));
+}
+
 // --------------------------------------------------------
-// 2. NAVEGAÇÃO SPA
+// 3. NAVEGAÇÃO SPA
 // --------------------------------------------------------
 function switchPage(pageId) {
     document.getElementById('page-home').classList.add('hidden');
@@ -77,26 +91,20 @@ function switchPage(pageId) {
 }
 
 // --------------------------------------------------------
-// 3. FUNÇÕES WHATSAPP
+// 4. FUNÇÕES WHATSAPP
 // --------------------------------------------------------
 function openWhatsApp(message) {
     const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
 }
 
-// Nova função que pega os dados do formulário e manda pro WhatsApp
 function sendWhatsAppForm(e) {
-    e.preventDefault(); // Impede a página de recarregar
-    
+    e.preventDefault();
     const nome = document.getElementById('wa-nome').value;
     const msg = document.getElementById('wa-msg').value;
-    
-    // Monta o texto que vai chegar no celular do Douglas
     const textoFinal = `Olá, Douglas! Meu nome é *${nome}*.\n\nGostaria de falar sobre o seguinte projeto:\n_${msg}_`;
-    
     openWhatsApp(textoFinal);
-    
-    e.target.reset(); // Limpa os campos depois que enviou
+    e.target.reset();
 }
 
 const getStars = (rating) => {
@@ -108,35 +116,43 @@ const getStars = (rating) => {
 };
 
 // --------------------------------------------------------
-// 4. GALERIA E LIGHTBOX
+// 5. GALERIA E LIGHTBOX (Com títulos opcionais)
 // --------------------------------------------------------
 function renderPortfolio() {
     const containerHome = document.getElementById('portfolio-grid-home');
     const amostra = portfolio.slice(0, 3);
     
-    containerHome.innerHTML = amostra.map((item, index) => `
+    // Na Home
+    containerHome.innerHTML = amostra.map((item, index) => {
+        // Se a pessoa digitou um título, cria a tag HTML do título. Se não, fica vazio.
+        const titleHtml = item.title ? `<h4 class="font-heading font-bold text-brand-dark text-center mt-4 mb-2">${item.title}</h4>` : '';
+        return `
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-2 scroll-reveal" style="transition-delay: ${index * 100}ms">
-            <div class="gallery-img-wrapper h-64 w-full" onclick="openLightbox('${item.img}', '${item.title}')">
-                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover">
+            <div class="gallery-img-wrapper h-64 w-full" onclick="openLightbox('${item.img}', '${item.title || ''}')">
+                <img src="${item.img}" alt="Obra" class="w-full h-full object-cover">
             </div>
-            <h4 class="font-heading font-bold text-brand-dark text-center mt-4 mb-2">${item.title}</h4>
-        </div>
-    `).join('');
+            ${titleHtml}
+        </div>`;
+    }).join('');
 
+    // Na Galeria Completa
     const containerFull = document.getElementById('portfolio-grid-full');
-    containerFull.innerHTML = portfolio.map((item) => `
+    containerFull.innerHTML = portfolio.map((item) => {
+        const titleHtml = item.title ? `<h4 class="font-heading font-bold text-brand-dark text-center mt-3 mb-1 text-sm md:text-base truncate px-2">${item.title}</h4>` : '';
+        return `
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-2 scroll-reveal">
-            <div class="gallery-img-wrapper w-full" onclick="openLightbox('${item.img}', '${item.title}')">
-                <img src="${item.img}" alt="${item.title}">
+            <div class="gallery-img-wrapper w-full" onclick="openLightbox('${item.img}', '${item.title || ''}')">
+                <img src="${item.img}" alt="Obra">
             </div>
-            <h4 class="font-heading font-bold text-brand-dark text-center mt-3 mb-1 text-sm md:text-base truncate px-2">${item.title}</h4>
-        </div>
-    `).join('');
+            ${titleHtml}
+        </div>`;
+    }).join('');
 }
 
 function openLightbox(imgSrc, title) {
     document.getElementById('lightbox-img').src = imgSrc;
-    document.getElementById('lightbox-caption').textContent = title;
+    // Só exibe texto se existir título
+    document.getElementById('lightbox-caption').textContent = title || ''; 
     document.getElementById('lightbox').classList.remove('hidden');
 }
 
@@ -149,7 +165,7 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 
 // --------------------------------------------------------
-// 5. AVALIAÇÕES 
+// 6. AVALIAÇÕES 
 // --------------------------------------------------------
 function renderPublicReviews() {
     const container = document.getElementById('reviews-container');
@@ -209,17 +225,16 @@ function submitReview(e) {
         rating: nota 
     });
     
-    saveDataLocally();
+    saveDataGlobally(); // Envia pro Firebase
+    
     e.target.reset();
     document.getElementById('review-rating').value = 5;
     initStarSelector();
     alert("Avaliação recebida! Se for nota 5, ela aparecerá no site em breve.");
-    renderPublicReviews();
-    renderAdminData();
 }
 
 // --------------------------------------------------------
-// 6. ADMIN E ACESSO SECRETO
+// 7. ADMIN E ACESSO SECRETO
 // --------------------------------------------------------
 document.addEventListener('keydown', (e) => {
     if (e.shiftKey && (e.key === 'l' || e.key === 'L')) {
@@ -239,14 +254,12 @@ function handleSecretAdminClick() {
         secretClickCount = 0;
         requestAdminAccess();
     } else {
-        secretClickTimer = setTimeout(() => {
-            secretClickCount = 0;
-        }, 2000); 
+        secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 2000); 
     }
 }
 
 function requestAdminAccess() {
-    if (prompt("Acesso Administrativo. Digite a senha:") === "Dioguinho2") {
+    if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
         openAdmin();
     } else {
         alert("Senha incorreta.");
@@ -283,7 +296,10 @@ function renderAdminData() {
     `).join('');
 
     const galContainer = document.getElementById('admin-gallery-list');
-    galContainer.innerHTML = portfolio.map((p, index) => `
+    galContainer.innerHTML = portfolio.map((p, index) => {
+        // Título visual pro Admin
+        const displayTitle = p.title ? p.title : "Sem título";
+        return `
         <div draggable="true" 
              ondragstart="handleDragStart(event, ${index})" 
              ondragover="handleDragOver(event)" 
@@ -291,7 +307,7 @@ function renderAdminData() {
              ondrop="handleDrop(event, ${index})"
              class="bg-white p-2 rounded shadow border text-center relative group cursor-move transition-all">
             <img src="${p.img}" class="w-full h-24 object-cover rounded mb-2 pointer-events-none">
-            <p class="text-xs font-bold truncate">${p.title}</p>
+            <p class="text-xs font-bold truncate text-gray-700">${displayTitle}</p>
             
             <button onclick="editPhotoTitle(${p.id})" class="absolute top-1 left-1 bg-blue-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity" title="Editar Título">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -300,79 +316,90 @@ function renderAdminData() {
             <button onclick="deletePhoto(${p.id})" class="absolute top-1 right-1 bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity" title="Apagar Foto">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-        </div>
-    `).join('');
+        </div>`;
+    }).join('');
 }
 
 function deleteReview(id) {
     if(confirm("Apagar esta avaliação?")) {
         reviews = reviews.filter(r => r.id !== id);
-        saveDataLocally();
-        renderAdminData();
-        renderPublicReviews(); 
+        saveDataGlobally();
     }
 }
 
 function editPhotoTitle(id) {
     const photo = portfolio.find(p => p.id === id);
     if (!photo) return;
-    const newTitle = prompt("Digite o novo título da foto:", photo.title);
-    if (newTitle !== null && newTitle.trim() !== "") {
+    const newTitle = prompt("Digite o novo título da foto (Deixe em branco para remover o título):", photo.title || "");
+    if (newTitle !== null) {
         photo.title = newTitle.trim();
-        saveDataLocally();
-        renderAdminData();
-        renderPortfolio();
+        saveDataGlobally();
     }
 }
 
 // UPLOAD DE IMAGEM COM COMPRESSÃO
-async function addPhoto(e) {
+function addPhoto(e) {
     e.preventDefault();
-    
-    const file = document.getElementById('new-photo-file').files[0];
-    const title = document.getElementById('new-photo-title').value;
+    const titleInput = document.getElementById('new-photo-title').value.trim(); // Pega título, mesmo vazio
+    const fileInput = document.getElementById('new-photo-file');
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
     const btn = document.getElementById('add-photo-btn');
+    btn.textContent = "Salvando...";
+    btn.disabled = true;
 
-    if (!file) return alert("Selecione uma imagem!");
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800;
+            const MAX_HEIGHT = 800;
+            let width = img.width;
+            let height = img.height;
 
-    try {
-        btn.disabled = true;
-        btn.innerText = "Enviando...";
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
 
-        // 1. Criar uma referência no Storage (caminho onde a foto vai ficar)
-        const storageRef = fb.ref(window.storage, 'galeria/' + Date.now() + "_" + file.name);
-
-        // 2. Fazer o upload do arquivo
-        const snapshot = await fb.uploadBytes(storageRef, file);
-
-        // 3. Pegar a URL pública da foto
-        const downloadURL = await fb.getDownloadURL(snapshot.ref);
-
-        // 4. Salvar no Firestore
-        await fb.addDoc(fb.collection(db, "portfolio"), {
-            title: title || "Obra Douglas",
-            img: downloadURL,
-            createdAt: new Date()
-        });
-
-        alert("Foto enviada com sucesso!");
-        e.target.reset();
-        loadData(); // Recarrega a galeria na tela
-    } catch (error) {
-        console.error(error);
-        alert("Erro ao enviar imagem: " + error.message);
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "Adicionar";
-    }
+            portfolio.unshift({ 
+                id: Date.now(),
+                title: titleInput, // Agora salva vazio se a pessoa não preencheu nada
+                img: compressedDataUrl
+            });
+            
+            saveDataGlobally(); // Manda pro Firebase
+            
+            e.target.reset(); // Limpa o campinho
+            btn.textContent = "Adicionar";
+            btn.disabled = false;
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
 function deletePhoto(id) {
     if(confirm("Deseja apagar esta foto da galeria?")) {
         portfolio = portfolio.filter(p => p.id !== id);
-        saveDataLocally();
-        renderAdminData();
-        renderPortfolio();
+        saveDataGlobally();
     }
 }
 
@@ -405,15 +432,12 @@ function handleDrop(e, dropTargetIndex) {
     const draggedItem = portfolio.splice(draggedItemIndex, 1)[0];
     portfolio.splice(dropTargetIndex, 0, draggedItem);
 
-    saveDataLocally(); 
-    renderAdminData();
-    renderPortfolio();
-    
+    saveDataGlobally(); 
     draggedItemIndex = null;
 }
 
 // --------------------------------------------------------
-// 7. ANIMAÇÕES DE SCROLL E INICIALIZAÇÃO
+// 8. ANIMAÇÕES DE SCROLL E INICIALIZAÇÃO
 // --------------------------------------------------------
 function initScrollAnimations() {
     const reveals = document.querySelectorAll('.scroll-reveal');
@@ -430,8 +454,6 @@ function initScrollAnimations() {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
-    renderPortfolio();
-    renderPublicReviews();
     initStarSelector();
     switchPage('home'); 
 });
