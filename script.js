@@ -211,7 +211,7 @@ function handleSecretAdminClick() {
 }
 
 function requestAdminAccess() {
-    if (prompt("Acesso Administrativo. Digite a senha:") === "admin123") {
+    if (prompt("Acesso Administrativo. Digite a senha:") === "Dioguinho2") {
         document.getElementById('admin-modal').classList.remove('hidden');
         renderAdminData();
     } else {
