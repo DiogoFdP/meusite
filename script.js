@@ -19,12 +19,38 @@ const defaultReviews = [
     { id: 4, client: "Alexsander Braz", text: "Precisei de um serviço de última hora e fui surpreendido positivamente. Rapidez e qualidade.", rating: 5 }
 ];
 
-let portfolio = JSON.parse(localStorage.getItem('dp_portfolio')) || defaultPortfolio;
-let reviews = JSON.parse(localStorage.getItem('dp_reviews')) || defaultReviews;
+let portfolio = [];
+let reviews = [];
 
-function saveDataLocally() {
-    localStorage.setItem('dp_portfolio', JSON.stringify(portfolio));
-    localStorage.setItem('dp_reviews', JSON.stringify(reviews));
+async function loadData() {
+    const portfolioSnap = await fb.getDocs(fb.collection(db, "portfolio"));
+    portfolio = portfolioSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    const reviewsSnap = await fb.getDocs(fb.collection(db, "reviews"));
+    reviews = reviewsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    renderPortfolio();
+    renderPublicReviews();
+}
+
+async function savePortfolioItem(item) {
+    await fb.addDoc(fb.collection(db, "portfolio"), item);
+    await loadData();
+}
+
+async function deletePortfolioItem(id) {
+    await fb.deleteDoc(fb.doc(db, "portfolio", id));
+    await loadData();
+}
+
+async function saveReviewItem(item) {
+    await fb.addDoc(fb.collection(db, "reviews"), item);
+    await loadData();
+}
+
+async function deleteReviewItem(id) {
+    await fb.deleteDoc(fb.doc(db, "reviews", id));
+    await loadData();
 }
 
 let isReviewsExpanded = false;
@@ -183,7 +209,7 @@ function submitReview(e) {
         rating: nota 
     });
     
-    saveDataLocally();
+    await loadData();
     e.target.reset();
     document.getElementById('review-rating').value = 5;
     initStarSelector();
